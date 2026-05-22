@@ -2132,15 +2132,23 @@
 
             const log = getTodayLog();
             const food = currentEditState.foodData;
+            const foodData = foods[food.name];
+
+            // Calculate nutrition per unit, then multiply by new quantity
+            const portionValue = parseFloat(foodData.portionValue) || 1;
+            const caloriesPerUnit = foodData.cal / portionValue;
+            const proteinPerUnit = foodData.protein / portionValue;
+            const carbsPerUnit = foodData.carbs / portionValue;
+            const fatsPerUnit = foodData.fats / portionValue;
 
             // Recalculate nutrition with new quantity
             const newFood = {
                 ...food,
                 quantity: newQuantity,
-                cal: (foods[food.name].cal / foods[food.name].portionValue) * newQuantity,
-                protein: (foods[food.name].protein / foods[food.name].portionValue) * newQuantity,
-                carbs: (foods[food.name].carbs / foods[food.name].portionValue) * newQuantity,
-                fats: (foods[food.name].fats / foods[food.name].portionValue) * newQuantity
+                cal: caloriesPerUnit * newQuantity,
+                protein: proteinPerUnit * newQuantity,
+                carbs: carbsPerUnit * newQuantity,
+                fats: fatsPerUnit * newQuantity
             };
 
             // Remove from original meal
