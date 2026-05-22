@@ -46,7 +46,9 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
         }
 
         .app-container {
@@ -54,12 +56,20 @@
             max-width: 480px;
             margin: 0 auto;
             background: white;
-            min-height: 100vh;
+            height: 100%;
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
+            overflow: hidden;
+        }
+
+        /* Handle Dynamic Island on iPhone 16 Pro */
+        @supports (padding: max(0px)) {
+            .app-container {
+                padding-top: max(20px, env(safe-area-inset-top));
+                padding-bottom: max(20px, env(safe-area-inset-bottom));
+                height: calc(100% - max(20px, env(safe-area-inset-top)) - max(20px, env(safe-area-inset-bottom)));
+            }
         }
 
         .header {
@@ -266,8 +276,9 @@
         .content {
             flex: 1;
             padding: 24px 16px;
+            padding-bottom: 40px;
             overflow-y: auto;
-            padding-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .quick-actions {
