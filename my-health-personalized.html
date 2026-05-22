@@ -474,6 +474,31 @@
             text-align: right;
         }
 
+        .food-buttons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .food-edit {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .food-edit:active {
+            transform: scale(0.9);
+        }
+
         .food-remove {
             background: transparent;
             border: none;
@@ -1333,6 +1358,40 @@
         </div>
     </div>
 
+    <!-- Edit Food Modal -->
+    <div class="modal" id="editFoodModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Edit Food</div>
+                <button class="modal-close" onclick="closeEditFood()">×</button>
+            </div>
+
+            <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <label style="display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px;">Food Name</label>
+                    <input type="text" id="editFoodName" placeholder="Food name" disabled style="width: 100%; padding: 10px; border: 1px solid var(--neutral-200); border-radius: 6px; font-size: 14px; background: var(--neutral-100); color: var(--neutral-700);">
+                </div>
+
+                <div>
+                    <label style="display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px;">Meal Type</label>
+                    <select id="editMealType" style="width: 100%; padding: 10px; border: 1px solid var(--primary); border-radius: 6px; font-size: 14px; font-weight: 600;">
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="snacks">Snacks</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px;" id="editQuantityLabel">Quantity</label>
+                    <input type="number" id="editQuantity" placeholder="0" style="width: 100%; padding: 10px; border: 1px solid var(--primary); border-radius: 6px; font-size: 16px;">
+                </div>
+
+                <button onclick="saveEditedFood()" style="width: 100%; padding: 12px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 8px;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Settings/Profile Modal -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
@@ -1801,7 +1860,10 @@
                                 <div class="food-right">
                                     <div class="food-cal">${Math.round(f.cal)} cal</div>
                                     <div class="food-protein">P: ${(f.protein < 1 ? f.protein.toFixed(1) : Math.round(f.protein))}g</div>
-                                    <button class="food-remove" onclick="removeFood('${meal}', ${i})">×</button>
+                                    <div class="food-buttons">
+                                        <button class="food-edit" onclick="editFood('${meal}', ${i}, '${f.name}')">✏️</button>
+                                        <button class="food-remove" onclick="removeFood('${meal}', ${i})">×</button>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -2008,6 +2070,85 @@
             updateUI();
             showNotification('Food removed');
         }
+
+        // ===== EDIT FOOD FUNCTIONS =====
+        let currentEditState = {
+            originalMeal: null,
+            originalIndex: null,
+            foodData: null
+        };
+
+        function editFood(meal, index, foodName) {
+            const log = getTodayLog();
+            const food = log[meal][index];
+
+            // Store current state for saving
+            currentEditState = {
+                originalMeal: meal,
+                originalIndex: index,
+                foodData: food
+            };
+
+            // Populate modal with current values
+            document.getElementById('editFoodName').value = food.name;
+            document.getElementById('editMealType').value = meal;
+            document.getElementById('editQuantity').value = food.quantity;
+            document.getElementById('editQuantityLabel').textContent =
+                food.portionType === 'unit' ? 'Quantity (count)' :
+                food.portionType === 'ml' ? 'Quantity (ml)' : 'Quantity (grams)';
+
+            // Open modal
+            const modal = document.getElementById('editFoodModal');
+            modal.style.opacity = '1';
+            modal.style.visibility = 'visible';
+            preventBodyScroll();
+        }
+
+        function closeEditFood() {
+            const modal = document.getElementById('editFoodModal');
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
+            restoreBodyScroll();
+            currentEditState = { originalMeal: null, originalIndex: null, foodData: null };
+        }
+
+        function saveEditedFood() {
+            const newMeal = document.getElementById('editMealType').value;
+            const newQuantity = parseFloat(document.getElementById('editQuantity').value);
+
+            if (!newQuantity || newQuantity <= 0) {
+                showNotification('Please enter a valid quantity');
+                return;
+            }
+
+            const log = getTodayLog();
+            const food = currentEditState.foodData;
+
+            // Recalculate nutrition with new quantity
+            const newFood = {
+                ...food,
+                quantity: newQuantity,
+                cal: (foods[food.name].cal / foods[food.name].portionValue) * newQuantity,
+                protein: (foods[food.name].protein / foods[food.name].portionValue) * newQuantity,
+                carbs: (foods[food.name].carbs / foods[food.name].portionValue) * newQuantity,
+                fats: (foods[food.name].fats / foods[food.name].portionValue) * newQuantity
+            };
+
+            // Remove from original meal
+            log[currentEditState.originalMeal].splice(currentEditState.originalIndex, 1);
+
+            // Add to new meal (or back to original if unchanged)
+            if (!log[newMeal]) {
+                log[newMeal] = [];
+            }
+            log[newMeal].push(newFood);
+
+            // Close modal and refresh
+            closeEditFood();
+            updateUI();
+            showNotification('Food updated');
+        }
+        // ===== END EDIT FOOD FUNCTIONS =====
 
         function openSettings() {
             const profile = currentProfile;
