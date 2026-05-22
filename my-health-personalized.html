@@ -2312,6 +2312,114 @@
             notif.classList.add('show');
             setTimeout(() => notif.classList.remove('show'), 2000);
         }
+
+        // ===== SERVICE WORKER REGISTRATION & UPDATE DETECTION =====
+        // Register Service Worker for automatic updates and offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js', { scope: './' })
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully');
+
+                        // Check for updates every minute
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000);
+
+                        // Listen for new service worker installation
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New version detected - show update prompt
+                                    showUpdatePrompt();
+                                }
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+
+                // Handle controller change (indicates successful update)
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    console.log('New Service Worker activated');
+                });
+            });
+        }
+
+        // Show a user-friendly update prompt
+        function showUpdatePrompt() {
+            const existingPrompt = document.getElementById('updatePrompt');
+            if (existingPrompt) return; // Prevent duplicate prompts
+
+            const prompt = document.createElement('div');
+            prompt.id = 'updatePrompt';
+            prompt.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #00BCD4, #009688);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 600;
+                display: flex;
+                gap: 12px;
+                align-items: center;
+                max-width: 90%;
+                animation: slideUp 0.3s ease;
+            `;
+
+            prompt.innerHTML = `
+                <span>✨ New version available!</span>
+                <button style="
+                    background: white;
+                    color: #00BCD4;
+                    border: none;
+                    padding: 6px 16px;
+                    border-radius: 6px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    font-size: 13px;
+                ">Refresh</button>
+            `;
+
+            prompt.querySelector('button').addEventListener('click', () => {
+                window.location.reload();
+            });
+
+            document.body.appendChild(prompt);
+
+            // Auto-remove after 10 seconds
+            setTimeout(() => {
+                if (prompt.parentNode) {
+                    prompt.remove();
+                }
+            }, 10000);
+        }
+
+        // Add animation for update prompt
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from {
+                    transform: translateX(-50%) translateY(120px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(-50%) translateY(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        // ===== END SERVICE WORKER CODE =====
     </script>
 </body>
 </html>
