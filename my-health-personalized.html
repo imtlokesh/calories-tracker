@@ -827,10 +827,7 @@
 
         /* Modal scroll prevention - Safari friendly */
         body.modal-open {
-            position: fixed;
-            width: 100%;
             overflow: hidden;
-            height: 100vh;
         }
 
         html.modal-open {
@@ -1501,38 +1498,21 @@
         };
 
         // Store scroll position to prevent viewport jump on Safari
-        let scrollPosition = 0;
-
         function preventBodyScroll() {
-            scrollPosition = window.scrollY;
             document.body.classList.add('modal-open');
-            document.body.style.position = 'fixed';
-            document.body.style.width = '100%';
-            document.body.style.top = `-${scrollPosition}px`;
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
-            // Disable zoom on all inputs
-            document.querySelectorAll('input, textarea, select').forEach(el => {
-                el.style.fontSize = '16px';
-            });
         }
 
         function restoreBodyScroll() {
             document.body.classList.remove('modal-open');
-            document.body.style.position = '';
-            document.body.style.width = '';
-            document.body.style.top = '';
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
 
-            // Use requestAnimationFrame to ensure proper timing
-            requestAnimationFrame(() => {
-                window.scrollTo(0, scrollPosition);
-                // Blur any focused element to prevent Safari auto-zoom
-                if (document.activeElement && document.activeElement.blur) {
-                    document.activeElement.blur();
-                }
-            });
+            // Blur any focused element to prevent Safari auto-zoom
+            if (document.activeElement && document.activeElement.blur) {
+                document.activeElement.blur();
+            }
         }
 
         // Multi-profile data structure
