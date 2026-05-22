@@ -202,31 +202,6 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        .refresh-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1.5px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-        }
-
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: rotate(180deg);
-        }
-
-        .refresh-btn:active {
-            transform: rotate(180deg) scale(0.95);
-        }
-
         .tabs {
             display: flex;
             gap: 8px;
@@ -1274,7 +1249,6 @@
                     </div>
                 </div>
                 <button class="profile-switcher" onclick="openProfileSelector()">Switch Profile</button>
-                <button class="refresh-btn" onclick="forceRefreshApp()" title="Refresh app">🔄</button>
             </div>
             <div class="header-date" id="todayDate">Today</div>
 
@@ -2532,21 +2506,6 @@
             notif.classList.add('show');
             setTimeout(() => notif.classList.remove('show'), 2000);
         }
-
-        // ===== MANUAL REFRESH FUNCTION =====
-        function forceRefreshApp() {
-            showNotification('Refreshing app...');
-
-            // Force reload with cache-busting timestamp
-            const timestamp = new Date().getTime();
-            const currentUrl = window.location.href.split('?')[0]; // Remove any existing query params
-
-            // Force a hard refresh that bypasses all caches
-            setTimeout(() => {
-                window.location.href = currentUrl + '?refresh=' + timestamp;
-            }, 300);
-        }
-        // ===== END MANUAL REFRESH =====
 
         // ===== SERVICE WORKER REGISTRATION & UPDATE DETECTION =====
         // Register Service Worker for automatic updates and offline support
