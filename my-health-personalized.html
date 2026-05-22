@@ -1203,17 +1203,6 @@
         <!-- Dashboard Tab -->
         <div id="dashboard-tab" style="flex: 1; display: flex; flex-direction: column;">
             <div class="stats-card">
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <div class="stat-number" id="calDisplay">0 / 2000 cal</div>
-                        <div class="stat-label">Calories</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-number" id="proteinDisplay">0 / 50g</div>
-                        <div class="stat-label">Protein</div>
-                    </div>
-                </div>
-
                 <div class="progress-section">
                     <div class="progress-item">
                         <div class="progress-label">
@@ -1720,8 +1709,6 @@
             const calPercentage = Math.min(100, (totalCal / nutritionTargets.calories) * 100);
             const proteinPercentage = Math.min(100, (totalProtein / nutritionTargets.protein) * 100);
 
-            document.getElementById('calDisplay').textContent = Math.round(totalCal) + ' / ' + nutritionTargets.calories + ' cal';
-            document.getElementById('proteinDisplay').textContent = Math.round(totalProtein) + ' / ' + nutritionTargets.protein + 'g';
             document.getElementById('calBarText').textContent = Math.round(totalCal) + ' / ' + nutritionTargets.calories + ' cal';
             document.getElementById('proteinBarText').textContent = Math.round(totalProtein) + ' / ' + nutritionTargets.protein + 'g';
             document.getElementById('calBar').style.width = calPercentage + '%';
