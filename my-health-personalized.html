@@ -1843,6 +1843,7 @@
 
         function updateMeals() {
             const log = getTodayLog();
+            console.log('updateMeals called, log:', log);
             const html = ['breakfast', 'lunch', 'dinner', 'snacks'].map(meal => {
                 const items = log[meal] || [];
                 const cal = items.reduce((s, f) => s + f.cal, 0);
@@ -1904,7 +1905,15 @@
                 `;
             }).join('');
 
-            document.getElementById('mealSections').innerHTML = html;
+            const mealSectionsElement = document.getElementById('mealSections');
+            console.log('mealSections element:', mealSectionsElement);
+            console.log('html to render:', html);
+            if (mealSectionsElement) {
+                mealSectionsElement.innerHTML = html;
+                console.log('mealSections innerHTML set successfully');
+            } else {
+                console.error('mealSections element not found!');
+            }
         }
 
         function updateDate() {
