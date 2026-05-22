@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
     <title>My Health - Personalized Nutrition Tracker</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -825,8 +825,10 @@
             margin-top: 4px;
         }
 
-        /* Modal scroll prevention */
+        /* Modal scroll prevention - Safari friendly */
         body.modal-open {
+            position: fixed;
+            width: 100%;
             overflow: hidden;
         }
 
@@ -1493,6 +1495,21 @@
             'smoothie (protein)': { cal: 180, protein: 25, carbs: 10, fats: 2, portionType: 'volume', portionValue: '200ml', portionGrams: 200 }
         };
 
+        // Store scroll position to prevent viewport jump on Safari
+        let scrollPosition = 0;
+
+        function preventBodyScroll() {
+            scrollPosition = window.scrollY;
+            document.body.classList.add('modal-open');
+            document.body.style.top = `-${scrollPosition}px`;
+        }
+
+        function restoreBodyScroll() {
+            document.body.classList.remove('modal-open');
+            document.body.style.top = '0';
+            window.scrollTo(0, scrollPosition);
+        }
+
         // Multi-profile data structure
         let appState = {
             activeProfile: 'lokesh',
@@ -1555,7 +1572,7 @@
             `).join('');
 
             modal.classList.add('active');
-            document.body.classList.add('modal-open');
+            preventBodyScroll();
 
             // Close modal when clicking outside (on the backdrop)
             modal.onclick = function(e) {
@@ -1567,7 +1584,7 @@
 
         function closeProfileSelector() {
             document.getElementById('profileSelectorModal').classList.remove('active');
-            document.body.classList.remove('modal-open');
+            restoreBodyScroll();
         }
 
         function selectProfile(profileKey) {
@@ -1750,7 +1767,7 @@
             `;
 
             modal.classList.add('active');
-            document.body.classList.add('modal-open');
+            preventBodyScroll();
             document.getElementById('searchFood').focus();
 
             // Close modal when clicking outside (on the backdrop)
@@ -1759,7 +1776,7 @@
 
         function closeAddFood() {
             document.getElementById('foodModal').classList.remove('active');
-            document.body.classList.remove('modal-open');
+            restoreBodyScroll();
         }
 
         function searchFoods() {
@@ -1969,7 +1986,7 @@
             document.getElementById('profileDisplay').innerHTML = html;
             const modal = document.getElementById('settingsModal');
             modal.classList.add('active');
-            document.body.classList.add('modal-open');
+            preventBodyScroll();
 
             // Close modal when clicking outside (on the backdrop)
             modal.onclick = function(e) {
@@ -1981,7 +1998,7 @@
 
         function closeSettings() {
             document.getElementById('settingsModal').classList.remove('active');
-            document.body.classList.remove('modal-open');
+            restoreBodyScroll();
         }
 
         function saveSettings(e) {
