@@ -256,21 +256,37 @@
 
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 28px;
             background: var(--neutral-200);
-            border-radius: 4px;
-            overflow: hidden;
+            border-radius: 6px;
+            overflow: visible;
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #00BCD4, #009688);
-            border-radius: 4px;
+            border-radius: 6px;
             transition: width 0.3s ease;
+            position: absolute;
+            left: 0;
         }
 
         .progress-fill.protein {
             background: linear-gradient(90deg, #FF9500, #FF7043);
+        }
+
+        .progress-text {
+            position: absolute;
+            left: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--neutral-800);
+            white-space: nowrap;
+            z-index: 2;
+            pointer-events: none;
         }
 
         #dashboard-tab {
@@ -1202,20 +1218,20 @@
                     <div class="progress-item">
                         <div class="progress-label">
                             <span>Calories</span>
-                            <span id="calPercent">0%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="calBar" style="width: 0%"></div>
+                            <div class="progress-text" id="calBarText">0 / 0 cal</div>
                         </div>
                     </div>
 
                     <div class="progress-item">
                         <div class="progress-label">
                             <span>Protein</span>
-                            <span id="proteinPercent">0%</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill protein" id="proteinBar" style="width: 0%"></div>
+                            <div class="progress-text" id="proteinBarText">0 / 0g</div>
                         </div>
                     </div>
                 </div>
@@ -1706,8 +1722,8 @@
 
             document.getElementById('calDisplay').textContent = Math.round(totalCal) + ' / ' + nutritionTargets.calories + ' cal';
             document.getElementById('proteinDisplay').textContent = Math.round(totalProtein) + ' / ' + nutritionTargets.protein + 'g';
-            document.getElementById('calPercent').textContent = Math.round(calPercentage) + '%';
-            document.getElementById('proteinPercent').textContent = Math.round(proteinPercentage) + '%';
+            document.getElementById('calBarText').textContent = Math.round(totalCal) + ' / ' + nutritionTargets.calories + ' cal';
+            document.getElementById('proteinBarText').textContent = Math.round(totalProtein) + ' / ' + nutritionTargets.protein + 'g';
             document.getElementById('calBar').style.width = calPercentage + '%';
             document.getElementById('proteinBar').style.width = proteinPercentage + '%';
 
