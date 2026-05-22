@@ -492,7 +492,7 @@
             padding: 12px;
             border: 1px solid var(--neutral-300);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
             font-family: inherit;
         }
 
@@ -579,7 +579,7 @@
             padding: 12px;
             border: 1px solid var(--neutral-300);
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
             margin-bottom: 12px;
         }
 
@@ -1511,6 +1511,10 @@
             document.body.style.top = `-${scrollPosition}px`;
             document.body.style.overflow = 'hidden';
             document.documentElement.style.overflow = 'hidden';
+            // Disable zoom on all inputs
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                el.style.fontSize = '16px';
+            });
         }
 
         function restoreBodyScroll() {
@@ -1520,11 +1524,15 @@
             document.body.style.top = '';
             document.body.style.overflow = '';
             document.documentElement.style.overflow = '';
-            // Force Safari to recalculate without zoom
-            window.scrollTo(0, scrollPosition);
-            // Double-check to prevent Safari auto-zoom
-            const viewport = document.querySelector('meta[name="viewport"]');
-            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=no');
+
+            // Use requestAnimationFrame to ensure proper timing
+            requestAnimationFrame(() => {
+                window.scrollTo(0, scrollPosition);
+                // Blur any focused element to prevent Safari auto-zoom
+                if (document.activeElement && document.activeElement.blur) {
+                    document.activeElement.blur();
+                }
+            });
         }
 
         // Multi-profile data structure
