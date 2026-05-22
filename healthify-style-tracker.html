@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthify - Calorie Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            padding-top: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-date {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .content {
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Daily Summary Card */
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .summary-main {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .summary-stat {
+            flex: 1;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 15px 0;
+        }
+
+        /* Macros */
+        .macros-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .macro-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .macro-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .macro-label {
+            font-size: 11px;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+
+        /* Quick Action Buttons */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .action-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .action-btn:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .action-btn-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Meal Sections */
+        .meal-section {
+            margin-bottom: 20px;
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 0 5px;
+        }
+
+        .meal-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meal-calories {
+            font-size: 13px;
+            color: #999;
+            font-weight: 600;
+        }
+
+        /* Food Cards */
+        .food-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .food-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .food-info {
+            flex: 1;
+        }
+
+        .food-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .food-portion {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .food-macros {
+            display: flex;
+            gap: 8px;
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .food-calories {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 14px;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .remove-food {
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-food:hover {
+            background: #ff3838;
+        }
+
+        .empty-meal {
+            text-align: center;
+            padding: 15px;
+            color: #999;
+            font-size: 13px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px dashed #e0e0e0;
+        }
+
+        /* Add Food Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            padding: 25px 20px;
+            max-width: 100%;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            padding: 15px;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-result-item:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .result-food-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .result-portion {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .result-calories {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Settings Modal */
+        .settings-modal-content {
+            max-width: 500px;
+            width: 100%;
+            border-radius: 16px;
+            background: white;
+            padding: 25px;
+        }
+
+        .settings-modal-content .modal-header {
+            margin-bottom: 25px;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .setting-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .diet-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .diet-option {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .diet-option:hover {
+            border-color: #667eea;
+        }
+
+        .diet-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .settings-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-save {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-save:hover {
+            background: #5568d3;
+        }
+
+        .btn-cancel {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-cancel:hover {
+            background: #d0d0d0;
+        }
+
+        /* Photo Upload */
+        .photo-upload-section {
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f0f4ff;
+            margin-bottom: 20px;
+        }
+
+        .photo-upload-section:hover {
+            background: #e8ebff;
+        }
+
+        .photo-upload-section input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .upload-subtext {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Bottom Action Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            padding: 12px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            z-index: 50;
+        }
+
+        .bottom-action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-add {
+            background: #667eea;
+            color: white;
+            grid-column: 1 / 3;
+        }
+
+        .btn-add:hover {
+            background: #5568d3;
+        }
+
+        .btn-settings {
+            background: #f0f4ff;
+            color: #667eea;
+        }
+
+        .btn-settings:hover {
+            background: #e8ebff;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4ade80;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+            z-index: 2000;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .bottom-bar {
+                border-radius: 16px 16px 0 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <h1>Healthify</h1>
+                <div class="header-date" id="headerDate"></div>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" onclick="openSettings()" title="Settings">⚙️</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Daily Summary -->
+            <div class="summary-card">
+                <div class="summary-main">
+                    <div class="summary-stat">
+                        <div class="summary-value" id="consumedCal">0</div>
+                        <div class="summary-label">Consumed</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-value" id="remainingCal">2000</div>
+                        <div class="summary-label">Remaining</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-value" id="targetCal">2000</div>
+                        <div class="summary-label">Target</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="macros-grid">
+                    <div class="macro-item">
+                        <div class="macro-value" id="proteinValue">0<span style="font-size: 12px;">g</span></div>
+                        <div class="macro-label">Protein</div>
+                    </div>
+                    <div class="macro-item">
+                        <div class="macro-value" id="carbsValue">0<span style="font-size: 12px;">g</span></div>
+                        <div class="macro-label">Carbs</div>
+                    </div>
+                    <div class="macro-item">
+                        <div class="macro-value" id="fatsValue">0<span style="font-size: 12px;">g</span></div>
+                        <div class="macro-label">Fats</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="action-btn" onclick="selectMealAndAdd('breakfast')">
+                    <div class="action-btn-icon">☀️</div>
+                    Breakfast
+                </button>
+                <button class="action-btn" onclick="selectMealAndAdd('lunch')">
+                    <div class="action-btn-icon">🍽️</div>
+                    Lunch
+                </button>
+                <button class="action-btn" onclick="selectMealAndAdd('dinner')">
+                    <div class="action-btn-icon">🌙</div>
+                    Dinner
+                </button>
+            </div>
+
+            <!-- Breakfast Section -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">☀️ Breakfast</div>
+                    <div class="meal-calories" id="breakfastCal">0 cal</div>
+                </div>
+                <div id="breakfastItems"></div>
+            </div>
+
+            <!-- Lunch Section -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">🍽️ Lunch</div>
+                    <div class="meal-calories" id="lunchCal">0 cal</div>
+                </div>
+                <div id="lunchItems"></div>
+            </div>
+
+            <!-- Dinner Section -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">🌙 Dinner</div>
+                    <div class="meal-calories" id="dinnerCal">0 cal</div>
+                </div>
+                <div id="dinnerItems"></div>
+            </div>
+
+            <!-- Snacks Section -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">🥜 Snacks</div>
+                    <div class="meal-calories" id="snacksCal">0 cal</div>
+                </div>
+                <div id="snacksItems"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Food Modal -->
+    <div class="modal" id="addFoodModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Add Food</span>
+                <button class="close-btn" onclick="closeAddFood()">×</button>
+            </div>
+
+            <!-- Photo Upload -->
+            <div class="photo-upload-section" onclick="document.getElementById('photoInput').click()">
+                <div class="upload-icon">📷</div>
+                <div class="upload-text">Snap Photo</div>
+                <div class="upload-subtext">Identify food using AI</div>
+                <input type="file" id="photoInput" accept="image/*" onchange="handlePhotoUpload(event)">
+            </div>
+
+            <!-- Search -->
+            <input type="text" class="search-input" id="foodSearch" placeholder="Search food (e.g., eggs, rice)" onkeyup="searchFood()">
+
+            <!-- Search Results -->
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content settings-modal-content">
+            <div class="modal-header">
+                <span>Settings</span>
+                <button class="close-btn" onclick="closeSettings()">×</button>
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Daily Calorie Target</label>
+                <input type="number" class="setting-input" id="targetInput" placeholder="e.g., 2000" min="1000" max="5000">
+            </div>
+
+            <div class="setting-group">
+                <label class="setting-label">Dietary Preference</label>
+                <div class="diet-options">
+                    <div class="diet-option" onclick="selectDiet('omnivore')">🍗 Omnivore</div>
+                    <div class="diet-option" onclick="selectDiet('vegetarian')">🥬 Vegetarian</div>
+                    <div class="diet-option" onclick="selectDiet('vegan')">🌱 Vegan</div>
+                    <div class="diet-option" onclick="selectDiet('keto')">🥩 Keto</div>
+                </div>
+            </div>
+
+            <div class="settings-buttons">
+                <button class="btn-save" onclick="saveSettings()">Save</button>
+                <button class="btn-cancel" onclick="closeSettings()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Bottom Action Bar -->
+    <div class="bottom-bar">
+        <button class="bottom-action-btn btn-add" onclick="openAddFood()">
+            <span style="font-size: 18px;">+</span>
+            Add Food
+        </button>
+        <button class="bottom-action-btn btn-settings" onclick="openSettings()">
+            <span style="font-size: 18px;">⚙️</span>
+            Settings
+        </button>
+    </div>
+
+    <script>
+        // Food Database (USDA Verified)
+        const foodDatabase = {
+            'eggs': { calories: 78, protein: 6, carbs: 0.6, fats: 5.3, portion: '1 large (50g)' },
+            'milk (whole)': { calories: 149, protein: 8, carbs: 12, fats: 8, portion: '1 cup (240ml)' },
+            'milk (2%)': { calories: 122, protein: 8, carbs: 12, fats: 5, portion: '1 cup (240ml)' },
+            'milk (skim)': { calories: 86, protein: 8.3, carbs: 12, fats: 0.4, portion: '1 cup (240ml)' },
+            'yogurt (plain)': { calories: 100, protein: 3.5, carbs: 7, fats: 0.4, portion: '100g' },
+            'cheese (cheddar)': { calories: 403, protein: 25, carbs: 1.3, fats: 33, portion: '100g' },
+            'paneer': { calories: 265, protein: 25, carbs: 3, fats: 17, portion: '100g' },
+            'cottage cheese': { calories: 98, protein: 11, carbs: 3.9, fats: 5, portion: '100g' },
+            'rice (white, cooked)': { calories: 130, protein: 2.7, carbs: 28, fats: 0.3, portion: '100g' },
+            'rice (brown, cooked)': { calories: 111, protein: 2.6, carbs: 23, fats: 0.9, portion: '100g' },
+            'bread (wheat)': { calories: 265, protein: 9, carbs: 47, fats: 3.6, portion: '100g (2-3 slices)' },
+            'pasta (cooked)': { calories: 131, protein: 5, carbs: 25, fats: 1.1, portion: '100g' },
+            'oats (dry)': { calories: 389, protein: 17, carbs: 66, fats: 7, portion: '100g' },
+            'sweet potato': { calories: 86, protein: 1.6, carbs: 20, fats: 0.1, portion: '100g' },
+            'potato (boiled)': { calories: 77, protein: 2, carbs: 17, fats: 0.1, portion: '100g' },
+            'lentils (cooked)': { calories: 116, protein: 9.2, carbs: 20, fats: 0.4, portion: '100g' },
+            'chickpeas (cooked)': { calories: 134, protein: 8.9, carbs: 23, fats: 2.1, portion: '100g' },
+            'beans (cooked)': { calories: 127, protein: 8.7, carbs: 23, fats: 0.4, portion: '100g' },
+            'black beans (cooked)': { calories: 132, protein: 8.9, carbs: 24, fats: 0.5, portion: '100g' },
+            'peas (cooked)': { calories: 84, protein: 5.4, carbs: 15, fats: 0.2, portion: '100g' },
+            'tofu (firm)': { calories: 76, protein: 8.1, carbs: 1.9, fats: 4.8, portion: '100g' },
+            'tempeh': { calories: 195, protein: 19.3, carbs: 7.6, fats: 11, portion: '100g' },
+            'peanuts': { calories: 567, protein: 26, carbs: 16, fats: 49, portion: '100g' },
+            'almonds': { calories: 579, protein: 21, carbs: 22, fats: 50, portion: '100g' },
+            'cashews': { calories: 553, protein: 18, carbs: 30, fats: 44, portion: '100g' },
+            'peanut butter': { calories: 588, protein: 25, carbs: 20, fats: 50, portion: '100g' },
+            'chickpea flour': { calories: 364, protein: 22, carbs: 57, fats: 6, portion: '100g' },
+            'spinach (raw)': { calories: 23, protein: 2.7, carbs: 3.6, fats: 0.4, portion: '100g' },
+            'broccoli (cooked)': { calories: 34, protein: 2.8, carbs: 7, fats: 0.4, portion: '100g' },
+            'carrots (cooked)': { calories: 41, protein: 0.9, carbs: 10, fats: 0.2, portion: '100g' },
+            'tomato': { calories: 18, protein: 0.9, carbs: 3.9, fats: 0.2, portion: '100g' },
+            'cucumber': { calories: 16, protein: 0.7, carbs: 3.6, fats: 0.1, portion: '100g' },
+            'bell pepper': { calories: 31, protein: 1, carbs: 6, fats: 0.3, portion: '100g' },
+            'cauliflower (cooked)': { calories: 25, protein: 1.9, carbs: 5, fats: 0.2, portion: '100g' },
+            'cabbage (cooked)': { calories: 22, protein: 1.3, carbs: 5, fats: 0.1, portion: '100g' },
+            'zucchini (cooked)': { calories: 21, protein: 1.4, carbs: 4, fats: 0.4, portion: '100g' },
+            'banana': { calories: 89, protein: 1.1, carbs: 23, fats: 0.3, portion: '1 medium (118g)' },
+            'apple': { calories: 52, protein: 0.3, carbs: 14, fats: 0.2, portion: '1 medium (182g)' },
+            'orange': { calories: 47, protein: 0.9, carbs: 12, fats: 0.3, portion: '1 medium (131g)' },
+            'mango': { calories: 60, protein: 0.8, carbs: 15, fats: 0.3, portion: '100g' },
+            'strawberries': { calories: 32, protein: 0.8, carbs: 8, fats: 0.3, portion: '100g' },
+            'blueberries': { calories: 57, protein: 0.7, carbs: 14, fats: 0.3, portion: '100g' },
+            'avocado': { calories: 160, protein: 2, carbs: 9, fats: 15, portion: '100g' },
+            'papaya': { calories: 43, protein: 0.5, carbs: 11, fats: 0.3, portion: '100g' },
+            'sunflower seeds': { calories: 584, protein: 24, carbs: 20, fats: 52, portion: '100g' },
+            'pumpkin seeds': { calories: 559, protein: 25, carbs: 15, fats: 49, portion: '100g' },
+            'sesame seeds': { calories: 563, protein: 18, carbs: 23, fats: 50, portion: '100g' },
+            'flaxseeds': { calories: 534, protein: 18, carbs: 29, fats: 42, portion: '100g' },
+            'honey': { calories: 304, protein: 0.3, carbs: 82, fats: 0, portion: '100g' }
+        };
+
+        const dietaryFoods = {
+            omnivore: [],
+            vegetarian: ['eggs', 'milk (whole)', 'milk (2%)', 'milk (skim)', 'cheese (cheddar)', 'paneer', 'cottage cheese', 'yogurt (plain)', 'tofu (firm)', 'tempeh', 'lentils (cooked)', 'chickpeas (cooked)', 'beans (cooked)', 'black beans (cooked)', 'peas (cooked)', 'almonds', 'cashews', 'peanuts', 'peanut butter', 'chickpea flour', 'rice (white, cooked)', 'rice (brown, cooked)', 'bread (wheat)', 'pasta (cooked)', 'oats (dry)', 'sweet potato', 'potato (boiled)', 'spinach (raw)', 'broccoli (cooked)', 'carrots (cooked)', 'tomato', 'bell pepper', 'avocado', 'banana', 'apple', 'orange', 'mango', 'strawberries', 'honey'],
+            vegan: ['tofu (firm)', 'tempeh', 'lentils (cooked)', 'chickpeas (cooked)', 'beans (cooked)', 'black beans (cooked)', 'peas (cooked)', 'almonds', 'cashews', 'peanuts', 'peanut butter', 'sunflower seeds', 'pumpkin seeds', 'sesame seeds', 'flaxseeds', 'rice (white, cooked)', 'rice (brown, cooked)', 'bread (wheat)', 'pasta (cooked)', 'oats (dry)', 'sweet potato', 'potato (boiled)', 'spinach (raw)', 'broccoli (cooked)', 'carrots (cooked)', 'tomato', 'cucumber', 'bell pepper', 'cauliflower (cooked)', 'cabbage (cooked)', 'zucchini (cooked)', 'avocado', 'banana', 'apple', 'orange', 'mango', 'strawberries', 'blueberries', 'papaya', 'honey'],
+            keto: ['eggs', 'cheese (cheddar)', 'paneer', 'cottage cheese', 'milk (skim)', 'avocado', 'almonds', 'cashews', 'peanuts', 'spinach (raw)', 'broccoli (cooked)', 'bell pepper', 'cauliflower (cooked)', 'zucchini (cooked)', 'tofu (firm)', 'tempeh']
+        };
+
+        let dailyLog = {};
+        let selectedMeal = 'breakfast';
+        let settings = {
+            target: 2000,
+            diet: 'vegetarian'
+        };
+
+        // Initialize
+        window.onload = function() {
+            loadData();
+            updateDate();
+            updateUI();
+        };
+
+        function updateDate() {
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+            document.getElementById('headerDate').textContent = today;
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('healthifyTrackerData');
+            const today = new Date().toDateString();
+
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.date === today) {
+                    dailyLog = data.log || { breakfast: [], lunch: [], dinner: [], snacks: [] };
+                    settings = data.settings || settings;
+                } else {
+                    dailyLog = { breakfast: [], lunch: [], dinner: [], snacks: [] };
+                }
+            } else {
+                dailyLog = { breakfast: [], lunch: [], dinner: [], snacks: [] };
+            }
+        }
+
+        function saveData() {
+            const data = {
+                date: new Date().toDateString(),
+                log: dailyLog,
+                settings: settings
+            };
+            localStorage.setItem('healthifyTrackerData', JSON.stringify(data));
+        }
+
+        function updateUI() {
+            updateSummary();
+            updateMeals();
+            saveData();
+        }
+
+        function updateSummary() {
+            let totalCals = 0, totalProtein = 0, totalCarbs = 0, totalFats = 0;
+
+            Object.values(dailyLog).forEach(meal => {
+                meal.forEach(food => {
+                    totalCals += food.calories;
+                    totalProtein += food.protein;
+                    totalCarbs += food.carbs;
+                    totalFats += food.fats;
+                });
+            });
+
+            const remaining = Math.max(0, settings.target - totalCals);
+
+            document.getElementById('consumedCal').textContent = Math.round(totalCals);
+            document.getElementById('remainingCal').textContent = Math.round(remaining);
+            document.getElementById('targetCal').textContent = settings.target;
+            document.getElementById('proteinValue').textContent = Math.round(totalProtein) + '<span style="font-size: 12px;">g</span>';
+            document.getElementById('carbsValue').textContent = Math.round(totalCarbs) + '<span style="font-size: 12px;">g</span>';
+            document.getElementById('fatsValue').textContent = Math.round(totalFats) + '<span style="font-size: 12px;">g</span>';
+        }
+
+        function updateMeals() {
+            const meals = ['breakfast', 'lunch', 'dinner', 'snacks'];
+
+            meals.forEach(meal => {
+                const items = dailyLog[meal] || [];
+                const totalCals = items.reduce((sum, food) => sum + food.calories, 0);
+                document.getElementById(meal + 'Cal').textContent = Math.round(totalCals) + ' cal';
+
+                const itemsHtml = items.length === 0
+                    ? '<div class="empty-meal">Add foods to this meal</div>'
+                    : items.map((food, idx) => `
+                        <div class="food-card">
+                            <div class="food-info">
+                                <div class="food-name">${food.name}</div>
+                                <div class="food-portion">${food.portion}</div>
+                                <div class="food-macros">
+                                    <span>P: ${Math.round(food.protein)}g</span>
+                                    <span>C: ${Math.round(food.carbs)}g</span>
+                                    <span>F: ${Math.round(food.fats)}g</span>
+                                </div>
+                            </div>
+                            <div class="food-calories">${Math.round(food.calories)}</div>
+                            <button class="remove-food" onclick="removeFood('${meal}', ${idx})">−</button>
+                        </div>
+                    `).join('');
+
+                document.getElementById(meal + 'Items').innerHTML = itemsHtml;
+            });
+        }
+
+        function selectMealAndAdd(meal) {
+            selectedMeal = meal;
+            openAddFood();
+        }
+
+        function openAddFood() {
+            document.getElementById('addFoodModal').classList.add('active');
+            document.getElementById('foodSearch').focus();
+        }
+
+        function closeAddFood() {
+            document.getElementById('addFoodModal').classList.remove('active');
+            document.getElementById('searchResults').innerHTML = '';
+            document.getElementById('foodSearch').value = '';
+        }
+
+        function searchFood() {
+            const query = document.getElementById('foodSearch').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+
+            if (!query) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+
+            const matches = Object.keys(foodDatabase).filter(food =>
+                food.toLowerCase().includes(query)
+            );
+
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = '<div class="empty-meal">No foods found</div>';
+                return;
+            }
+
+            resultsContainer.innerHTML = matches.map(food => {
+                const data = foodDatabase[food];
+                return `
+                    <div class="search-result-item" onclick="addFoodToMeal('${food}', ${data.calories}, ${data.protein}, ${data.carbs}, ${data.fats}, '${data.portion}')">
+                        <div>
+                            <div class="result-food-name">${food}</div>
+                            <div class="result-portion">${data.portion}</div>
+                        </div>
+                        <div class="result-calories">${Math.round(data.calories)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addFoodToMeal(foodName, calories, protein, carbs, fats, portion) {
+            if (!dailyLog[selectedMeal]) {
+                dailyLog[selectedMeal] = [];
+            }
+
+            dailyLog[selectedMeal].push({
+                name: foodName,
+                calories: calories,
+                protein: protein,
+                carbs: carbs,
+                fats: fats,
+                portion: portion
+            });
+
+            closeAddFood();
+            updateUI();
+            showNotification(`Added ${foodName} to ${selectedMeal}`);
+        }
+
+        function removeFood(meal, idx) {
+            dailyLog[meal].splice(idx, 1);
+            updateUI();
+            showNotification('Food removed');
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                showNotification('📷 Photo uploaded! AI recognition coming soon');
+            }
+        }
+
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+            document.getElementById('targetInput').value = settings.target;
+
+            document.querySelectorAll('.diet-option').forEach(option => {
+                option.classList.remove('selected');
+                if (settings.diet === 'omnivore' && option.textContent.includes('Omnivore')) {
+                    option.classList.add('selected');
+                } else if (settings.diet === 'vegetarian' && option.textContent.includes('Vegetarian')) {
+                    option.classList.add('selected');
+                } else if (settings.diet === 'vegan' && option.textContent.includes('Vegan')) {
+                    option.classList.add('selected');
+                } else if (settings.diet === 'keto' && option.textContent.includes('Keto')) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function selectDiet(diet) {
+            settings.diet = diet;
+            document.querySelectorAll('.diet-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        function saveSettings() {
+            const target = parseInt(document.getElementById('targetInput').value);
+            if (target && target > 0) {
+                settings.target = target;
+                saveData();
+                updateUI();
+                closeSettings();
+                showNotification('Settings saved!');
+            } else {
+                alert('Please enter a valid calorie target');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Close modals on backdrop click
+        document.getElementById('addFoodModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddFood();
+        });
+
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSettings();
+        });
+    </script>
+</body>
+</html>

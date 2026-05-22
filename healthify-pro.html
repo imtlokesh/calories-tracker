@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Health - Daily Nutrition Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00BCD4;
+            --primary-dark: #0097A7;
+            --secondary: #009688;
+            --accent: #FF9500;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --neutral-50: #f9fafb;
+            --neutral-100: #f3f4f6;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-600: #4b5563;
+            --neutral-700: #374151;
+            --neutral-900: #111827;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            background: var(--neutral-50);
+            color: var(--neutral-900);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #00BCD4 0%, #009688 100%);
+            color: white;
+            padding: 20px;
+            padding-top: 32px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .logo-box {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .header-date {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ===== MAIN STATS CARD ===== */
+        .stats-card {
+            background: white;
+            margin: -30px 16px 0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 34px;
+            font-weight: 800;
+            color: #00BCD4;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--neutral-600);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        /* ===== MACRO PROGRESS BARS ===== */
+        .macros-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .macro-card {
+            background: var(--neutral-50);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .macro-name {
+            font-size: 11px;
+            color: var(--neutral-600);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .macro-progress {
+            width: 100%;
+            height: 6px;
+            background: var(--neutral-200);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .macro-bar-protein {
+            background: linear-gradient(90deg, #00BCD4, #00ACC1);
+        }
+
+        .macro-bar-carbs {
+            background: linear-gradient(90deg, #FF9500, #FFB74D);
+        }
+
+        .macro-bar-fats {
+            background: linear-gradient(90deg, #FF7043, #FF8A65);
+        }
+
+        .macro-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        /* ===== CONTENT AREA ===== */
+        .content {
+            flex: 1;
+            padding: 24px 16px;
+            overflow-y: auto;
+            padding-bottom: 120px;
+        }
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .quick-btn {
+            background: var(--neutral-100);
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neutral-700);
+        }
+
+        .quick-btn:hover {
+            background: rgba(0, 188, 212, 0.08);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .quick-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* ===== MEAL SECTIONS ===== */
+        .meal-section {
+            margin-bottom: 24px;
+        }
+
+        .meal-section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .meal-label {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--neutral-900);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meal-icon {
+            font-size: 20px;
+        }
+
+        .meal-cal {
+            font-size: 14px;
+            font-weight: 700;
+            color: #00BCD4;
+        }
+
+        /* ===== FOOD ITEM CARDS ===== */
+        .food-item {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .food-item:hover {
+            border-color: #00BCD4;
+            box-shadow: 0 2px 12px rgba(0, 188, 212, 0.1);
+            background: rgba(0, 188, 212, 0.01);
+        }
+
+        .food-details {
+            flex: 1;
+        }
+
+        .food-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 4px;
+        }
+
+        .food-portion {
+            font-size: 12px;
+            color: var(--neutral-500);
+            margin-bottom: 6px;
+        }
+
+        .food-macros {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--neutral-600);
+        }
+
+        .food-macro {
+            display: flex;
+            gap: 3px;
+        }
+
+        .food-right {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-left: 12px;
+        }
+
+        .food-cal {
+            text-align: right;
+            min-width: 50px;
+        }
+
+        .food-cal-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: #00BCD4;
+        }
+
+        .food-cal-label {
+            font-size: 10px;
+            color: var(--neutral-600);
+        }
+
+        .food-remove {
+            background: var(--neutral-100);
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .food-remove:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 20px 16px;
+            color: var(--neutral-500);
+            font-size: 13px;
+            background: var(--neutral-50);
+            border-radius: 12px;
+            border: 1px dashed var(--neutral-300);
+        }
+
+        .empty-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            align-items: flex-end;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--neutral-900);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--neutral-400);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: var(--neutral-700);
+        }
+
+        /* ===== SEARCH ===== */
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--neutral-200);
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00BCD4;
+            background: rgba(0, 188, 212, 0.02);
+        }
+
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-item {
+            padding: 12px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-item:hover {
+            border-color: #00BCD4;
+            background: rgba(0, 188, 212, 0.05);
+        }
+
+        .search-food-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--neutral-900);
+            margin-bottom: 2px;
+        }
+
+        .search-portion {
+            font-size: 12px;
+            color: var(--neutral-600);
+        }
+
+        .search-cal {
+            font-weight: 700;
+            color: #00BCD4;
+            font-size: 14px;
+        }
+
+        /* ===== PHOTO SECTION ===== */
+        .photo-upload {
+            border: 2px dashed #00BCD4;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(0, 188, 212, 0.05);
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .photo-upload:hover {
+            background: rgba(0, 188, 212, 0.1);
+            border-color: #0097A7;
+        }
+
+        .photo-upload input {
+            display: none;
+        }
+
+        .photo-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .photo-text {
+            font-weight: 600;
+            color: #FF9500;
+            margin-bottom: 4px;
+        }
+
+        .photo-subtext {
+            font-size: 12px;
+            color: var(--neutral-600);
+        }
+
+        /* ===== SETTINGS ===== */
+        .settings-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            padding: 12px;
+            border: 1.5px solid var(--neutral-200);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00BCD4;
+            background: rgba(0, 188, 212, 0.02);
+        }
+
+        .diet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .diet-btn {
+            padding: 12px;
+            border: 1.5px solid var(--neutral-200);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            color: var(--neutral-700);
+        }
+
+        .diet-btn:hover {
+            border-color: #00BCD4;
+            color: #00BCD4;
+        }
+
+        .diet-btn.active {
+            background: #00BCD4;
+            color: white;
+            border-color: #00BCD4;
+        }
+
+        .form-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            padding: 12px;
+            background: #FF9500;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #FF7043;
+        }
+
+        .btn-secondary {
+            padding: 12px;
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--neutral-200);
+        }
+
+        /* ===== BOTTOM BAR ===== */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: white;
+            border-top: 1px solid var(--neutral-200);
+            padding: 12px 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 8px;
+            z-index: 50;
+        }
+
+        .btn-add-food {
+            background: linear-gradient(135deg, #FF9500, #FF7043);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-add-food:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.4);
+        }
+
+        .btn-settings-bar {
+            background: var(--neutral-100);
+            border: 1px solid var(--neutral-200);
+            color: #00BCD4;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-settings-bar:hover {
+            background: rgba(0, 188, 212, 0.1);
+            border-color: #00BCD4;
+        }
+
+        /* ===== NOTIFICATION ===== */
+        .notification {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                max-width: 100%;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div>
+                    <div class="header-logo">
+                        <div class="logo-box">
+                            <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Background circle -->
+                                <circle cx="30" cy="30" r="28" fill="white" opacity="0.15"/>
+                                <!-- Health cross -->
+                                <rect x="24" y="14" width="12" height="32" fill="white" rx="2"/>
+                                <rect x="14" y="24" width="32" height="12" fill="white" rx="2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="header-title">My Health</div>
+                            <div class="header-date" id="todayDate"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="header-btn" onclick="openSettings()">⚙️</button>
+            </div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="stats-card">
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number" id="consumedNum">0</div>
+                    <div class="stat-label">Consumed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="remainingNum">2000</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="targetNum">2000</div>
+                    <div class="stat-label">Target</div>
+                </div>
+            </div>
+
+            <!-- Macros Progress -->
+            <div class="macros-section">
+                <div class="macro-card">
+                    <div class="macro-name">Protein</div>
+                    <div class="macro-progress">
+                        <div class="macro-bar-protein" id="proteinBar" style="width: 0%"></div>
+                    </div>
+                    <div class="macro-value" id="proteinVal">0g</div>
+                </div>
+                <div class="macro-card">
+                    <div class="macro-name">Carbs</div>
+                    <div class="macro-progress">
+                        <div class="macro-bar-carbs" id="carbsBar" style="width: 0%"></div>
+                    </div>
+                    <div class="macro-value" id="carbsVal">0g</div>
+                </div>
+                <div class="macro-card">
+                    <div class="macro-name">Fats</div>
+                    <div class="macro-progress">
+                        <div class="macro-bar-fats" id="fatsBar" style="width: 0%"></div>
+                    </div>
+                    <div class="macro-value" id="fatsVal">0g</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="selectMealAndAdd('breakfast')">
+                    <div class="quick-icon">☀️</div>
+                    Breakfast
+                </button>
+                <button class="quick-btn" onclick="selectMealAndAdd('lunch')">
+                    <div class="quick-icon">🍽️</div>
+                    Lunch
+                </button>
+                <button class="quick-btn" onclick="selectMealAndAdd('dinner')">
+                    <div class="quick-icon">🌙</div>
+                    Dinner
+                </button>
+                <button class="quick-btn" onclick="selectMealAndAdd('snacks')">
+                    <div class="quick-icon">🥜</div>
+                    Snacks
+                </button>
+            </div>
+
+            <!-- Breakfast -->
+            <div class="meal-section">
+                <div class="meal-section-title">
+                    <div class="meal-label"><span class="meal-icon">☀️</span> Breakfast</div>
+                    <div class="meal-cal" id="breakfastCal">0 cal</div>
+                </div>
+                <div id="breakfastList"></div>
+            </div>
+
+            <!-- Lunch -->
+            <div class="meal-section">
+                <div class="meal-section-title">
+                    <div class="meal-label"><span class="meal-icon">🍽️</span> Lunch</div>
+                    <div class="meal-cal" id="lunchCal">0 cal</div>
+                </div>
+                <div id="lunchList"></div>
+            </div>
+
+            <!-- Dinner -->
+            <div class="meal-section">
+                <div class="meal-section-title">
+                    <div class="meal-label"><span class="meal-icon">🌙</span> Dinner</div>
+                    <div class="meal-cal" id="dinnerCal">0 cal</div>
+                </div>
+                <div id="dinnerList"></div>
+            </div>
+
+            <!-- Snacks -->
+            <div class="meal-section">
+                <div class="meal-section-title">
+                    <div class="meal-label"><span class="meal-icon">🥜</span> Snacks</div>
+                    <div class="meal-cal" id="snacksCal">0 cal</div>
+                </div>
+                <div id="snacksList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Food Modal -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Add Food</div>
+                <button class="modal-close" onclick="closeAddFood()">×</button>
+            </div>
+
+            <div class="photo-upload" onclick="document.getElementById('photoFile').click()">
+                <div class="photo-icon">📷</div>
+                <div class="photo-text">Snap Photo</div>
+                <div class="photo-subtext">Identify food using AI</div>
+                <input type="file" id="photoFile" accept="image/*" onchange="handlePhotoUpload(event)">
+            </div>
+
+            <input type="text" class="search-box" id="searchFood" placeholder="Search foods..." onkeyup="searchFoods()">
+            <div class="search-results" id="results"></div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Settings</div>
+                <button class="modal-close" onclick="closeSettings()">×</button>
+            </div>
+
+            <div class="settings-form">
+                <div class="form-group">
+                    <label class="form-label">Daily Calorie Target</label>
+                    <input type="number" class="form-input" id="targetInput" min="1000" max="5000" placeholder="2000">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Dietary Preference</label>
+                    <div class="diet-grid">
+                        <button class="diet-btn active" onclick="selectDiet('vegetarian', event)">🥬 Vegetarian</button>
+                        <button class="diet-btn" onclick="selectDiet('vegan', event)">🌱 Vegan</button>
+                        <button class="diet-btn" onclick="selectDiet('omnivore', event)">🍗 Omnivore</button>
+                        <button class="diet-btn" onclick="selectDiet('keto', event)">🥩 Keto</button>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button class="btn-primary" onclick="saveSettings()">Save</button>
+                    <button class="btn-secondary" onclick="closeSettings()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Bottom Bar -->
+    <div class="bottom-bar">
+        <button class="btn-add-food" onclick="openAddFood()">
+            <span>+</span> Add Food
+        </button>
+        <button class="btn-settings-bar" onclick="openSettings()">⚙️</button>
+    </div>
+
+    <script>
+        // Food Database
+        const foods = {
+            'eggs': { cal: 78, protein: 6, carbs: 0.6, fats: 5.3, portion: '1 large (50g)' },
+            'milk (whole)': { cal: 149, protein: 8, carbs: 12, fats: 8, portion: '1 cup (240ml)' },
+            'milk (2%)': { cal: 122, protein: 8, carbs: 12, fats: 5, portion: '1 cup (240ml)' },
+            'milk (skim)': { cal: 86, protein: 8.3, carbs: 12, fats: 0.4, portion: '1 cup (240ml)' },
+            'yogurt (plain)': { cal: 100, protein: 3.5, carbs: 7, fats: 0.4, portion: '100g' },
+            'cheese (cheddar)': { cal: 403, protein: 25, carbs: 1.3, fats: 33, portion: '100g' },
+            'paneer': { cal: 265, protein: 25, carbs: 3, fats: 17, portion: '100g' },
+            'cottage cheese': { cal: 98, protein: 11, carbs: 3.9, fats: 5, portion: '100g' },
+            'rice (white)': { cal: 130, protein: 2.7, carbs: 28, fats: 0.3, portion: '100g' },
+            'rice (brown)': { cal: 111, protein: 2.6, carbs: 23, fats: 0.9, portion: '100g' },
+            'bread (wheat)': { cal: 265, protein: 9, carbs: 47, fats: 3.6, portion: '100g' },
+            'pasta (cooked)': { cal: 131, protein: 5, carbs: 25, fats: 1.1, portion: '100g' },
+            'oats (dry)': { cal: 389, protein: 17, carbs: 66, fats: 7, portion: '100g' },
+            'sweet potato': { cal: 86, protein: 1.6, carbs: 20, fats: 0.1, portion: '100g' },
+            'potato (boiled)': { cal: 77, protein: 2, carbs: 17, fats: 0.1, portion: '100g' },
+            'lentils (cooked)': { cal: 116, protein: 9.2, carbs: 20, fats: 0.4, portion: '100g' },
+            'chickpeas (cooked)': { cal: 134, protein: 8.9, carbs: 23, fats: 2.1, portion: '100g' },
+            'beans (cooked)': { cal: 127, protein: 8.7, carbs: 23, fats: 0.4, portion: '100g' },
+            'black beans (cooked)': { cal: 132, protein: 8.9, carbs: 24, fats: 0.5, portion: '100g' },
+            'peas (cooked)': { cal: 84, protein: 5.4, carbs: 15, fats: 0.2, portion: '100g' },
+            'tofu (firm)': { cal: 76, protein: 8.1, carbs: 1.9, fats: 4.8, portion: '100g' },
+            'tempeh': { cal: 195, protein: 19.3, carbs: 7.6, fats: 11, portion: '100g' },
+            'peanuts': { cal: 567, protein: 26, carbs: 16, fats: 49, portion: '100g' },
+            'almonds': { cal: 579, protein: 21, carbs: 22, fats: 50, portion: '100g' },
+            'cashews': { cal: 553, protein: 18, carbs: 30, fats: 44, portion: '100g' },
+            'peanut butter': { cal: 588, protein: 25, carbs: 20, fats: 50, portion: '100g' },
+            'spinach (raw)': { cal: 23, protein: 2.7, carbs: 3.6, fats: 0.4, portion: '100g' },
+            'broccoli (cooked)': { cal: 34, protein: 2.8, carbs: 7, fats: 0.4, portion: '100g' },
+            'carrots (cooked)': { cal: 41, protein: 0.9, carbs: 10, fats: 0.2, portion: '100g' },
+            'tomato': { cal: 18, protein: 0.9, carbs: 3.9, fats: 0.2, portion: '100g' },
+            'bell pepper': { cal: 31, protein: 1, carbs: 6, fats: 0.3, portion: '100g' },
+            'cauliflower (cooked)': { cal: 25, protein: 1.9, carbs: 5, fats: 0.2, portion: '100g' },
+            'banana': { cal: 89, protein: 1.1, carbs: 23, fats: 0.3, portion: '1 medium (118g)' },
+            'apple': { cal: 52, protein: 0.3, carbs: 14, fats: 0.2, portion: '1 medium (182g)' },
+            'orange': { cal: 47, protein: 0.9, carbs: 12, fats: 0.3, portion: '1 medium (131g)' },
+            'mango': { cal: 60, protein: 0.8, carbs: 15, fats: 0.3, portion: '100g' },
+            'strawberries': { cal: 32, protein: 0.8, carbs: 8, fats: 0.3, portion: '100g' },
+            'blueberries': { cal: 57, protein: 0.7, carbs: 14, fats: 0.3, portion: '100g' },
+            'avocado': { cal: 160, protein: 2, carbs: 9, fats: 15, portion: '100g' }
+        };
+
+        const dietaryFoods = {
+            vegetarian: ['eggs', 'milk (whole)', 'milk (2%)', 'milk (skim)', 'cheese (cheddar)', 'paneer', 'cottage cheese', 'yogurt (plain)', 'tofu (firm)', 'tempeh', 'lentils (cooked)', 'chickpeas (cooked)', 'beans (cooked)', 'black beans (cooked)', 'peas (cooked)', 'almonds', 'cashews', 'peanuts', 'peanut butter', 'rice (white)', 'rice (brown)', 'bread (wheat)', 'pasta (cooked)', 'oats (dry)', 'sweet potato', 'potato (boiled)', 'spinach (raw)', 'broccoli (cooked)', 'carrots (cooked)', 'tomato', 'bell pepper', 'avocado', 'banana', 'apple', 'orange', 'mango', 'strawberries'],
+            vegan: ['tofu (firm)', 'tempeh', 'lentils (cooked)', 'chickpeas (cooked)', 'beans (cooked)', 'black beans (cooked)', 'peas (cooked)', 'almonds', 'cashews', 'peanuts', 'peanut butter', 'rice (white)', 'rice (brown)', 'bread (wheat)', 'pasta (cooked)', 'oats (dry)', 'sweet potato', 'potato (boiled)', 'spinach (raw)', 'broccoli (cooked)', 'carrots (cooked)', 'tomato', 'bell pepper', 'avocado', 'banana', 'apple', 'orange', 'mango', 'strawberries', 'blueberries'],
+            omnivore: Object.keys(foods),
+            keto: ['eggs', 'cheese (cheddar)', 'paneer', 'cottage cheese', 'tofu (firm)', 'tempeh', 'almonds', 'cashews', 'peanuts', 'spinach (raw)', 'broccoli (cooked)', 'bell pepper', 'cauliflower (cooked)', 'avocado']
+        };
+
+        let log = {};
+        let selectedMeal = 'breakfast';
+        let settings = { target: 2000, diet: 'vegetarian' };
+
+        window.onload = () => {
+            loadData();
+            updateDate();
+            updateUI();
+        };
+
+        function updateDate() {
+            const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+            document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US', opts);
+        }
+
+        function loadData() {
+            const today = new Date().toDateString();
+            const saved = localStorage.getItem('healthifyPro');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.date === today) {
+                    log = data.log || { breakfast: [], lunch: [], dinner: [], snacks: [] };
+                    settings = data.settings || settings;
+                } else {
+                    log = { breakfast: [], lunch: [], dinner: [], snacks: [] };
+                }
+            } else {
+                log = { breakfast: [], lunch: [], dinner: [], snacks: [] };
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('healthifyPro', JSON.stringify({
+                date: new Date().toDateString(),
+                log, settings
+            }));
+        }
+
+        function updateUI() {
+            let totalCal = 0, totalPro = 0, totalCarb = 0, totalFat = 0;
+            Object.values(log).forEach(meals => {
+                meals.forEach(food => {
+                    totalCal += food.cal;
+                    totalPro += food.protein;
+                    totalCarb += food.carbs;
+                    totalFat += food.fats;
+                });
+            });
+
+            const remaining = Math.max(0, settings.target - totalCal);
+            document.getElementById('consumedNum').textContent = Math.round(totalCal);
+            document.getElementById('remainingNum').textContent = Math.round(remaining);
+            document.getElementById('targetNum').textContent = settings.target;
+
+            // Macro bars (assume 50g protein, 250g carbs, 65g fats as max for visualization)
+            const proteinMax = 150, carbMax = 300, fatMax = 100;
+            document.getElementById('proteinBar').style.width = Math.min(100, (totalPro / proteinMax) * 100) + '%';
+            document.getElementById('carbsBar').style.width = Math.min(100, (totalCarb / carbMax) * 100) + '%';
+            document.getElementById('fatsBar').style.width = Math.min(100, (totalFat / fatMax) * 100) + '%';
+
+            document.getElementById('proteinVal').textContent = Math.round(totalPro) + 'g';
+            document.getElementById('carbsVal').textContent = Math.round(totalCarb) + 'g';
+            document.getElementById('fatsVal').textContent = Math.round(totalFat) + 'g';
+
+            updateMeals();
+            saveData();
+        }
+
+        function updateMeals() {
+            ['breakfast', 'lunch', 'dinner', 'snacks'].forEach(meal => {
+                const items = log[meal] || [];
+                const cal = items.reduce((s, f) => s + f.cal, 0);
+                document.getElementById(meal + 'Cal').textContent = Math.round(cal) + ' cal';
+
+                const html = !items.length ? '<div class="empty-state"><div class="empty-icon">🍽️</div>Add foods to this meal</div>'
+                    : items.map((f, i) => `
+                        <div class="food-item">
+                            <div class="food-details">
+                                <div class="food-name">${f.name}</div>
+                                <div class="food-portion">${f.portion}</div>
+                                <div class="food-macros">
+                                    <span class="food-macro">P: <strong>${Math.round(f.protein)}g</strong></span>
+                                    <span class="food-macro">C: <strong>${Math.round(f.carbs)}g</strong></span>
+                                    <span class="food-macro">F: <strong>${Math.round(f.fats)}g</strong></span>
+                                </div>
+                            </div>
+                            <div class="food-right">
+                                <div class="food-cal">
+                                    <div class="food-cal-number">${Math.round(f.cal)}</div>
+                                    <div class="food-cal-label">cal</div>
+                                </div>
+                                <button class="food-remove" onclick="removeFood('${meal}', ${i})">−</button>
+                            </div>
+                        </div>
+                    `).join('');
+                document.getElementById(meal + 'List').innerHTML = html;
+            });
+        }
+
+        function selectMealAndAdd(meal) { selectedMeal = meal; openAddFood(); }
+        function openAddFood() { document.getElementById('addModal').classList.add('active'); }
+        function closeAddFood() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('searchFood').value = '';
+            document.getElementById('results').innerHTML = '';
+        }
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('active');
+            document.getElementById('targetInput').value = settings.target;
+        }
+        function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+
+        function searchFoods() {
+            const query = document.getElementById('searchFood').value.toLowerCase();
+            const results = document.getElementById('results');
+            if (!query) { results.innerHTML = ''; return; }
+            const matches = Object.keys(foods).filter(f => f.toLowerCase().includes(query));
+            results.innerHTML = !matches.length ? '<div class="empty-state">No foods found</div>'
+                : matches.map(f => `
+                    <div class="search-item" onclick="addFood('${f}')">
+                        <div>
+                            <div class="search-food-name">${f}</div>
+                            <div class="search-portion">${foods[f].portion}</div>
+                        </div>
+                        <div class="search-cal">${Math.round(foods[f].cal)}</div>
+                    </div>
+                `).join('');
+        }
+
+        function addFood(name) {
+            const food = foods[name];
+            if (!log[selectedMeal]) log[selectedMeal] = [];
+            log[selectedMeal].push({ name, cal: food.cal, protein: food.protein, carbs: food.carbs, fats: food.fats, portion: food.portion });
+            closeAddFood();
+            updateUI();
+            showNotification(`Added ${name}`);
+        }
+
+        function removeFood(meal, idx) {
+            log[meal].splice(idx, 1);
+            updateUI();
+            showNotification('Food removed');
+        }
+
+        function selectDiet(diet, e) {
+            document.querySelectorAll('.diet-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            settings.diet = diet;
+        }
+
+        function saveSettings() {
+            const target = parseInt(document.getElementById('targetInput').value);
+            if (target > 0) {
+                settings.target = target;
+                saveData();
+                updateUI();
+                closeSettings();
+                showNotification('Settings saved!');
+            }
+        }
+
+        function handlePhotoUpload(e) {
+            if (e.target.files[0]) showNotification('📷 Photo uploaded! AI recognition coming soon');
+        }
+
+        function showNotification(msg) {
+            const notif = document.getElementById('notification');
+            notif.textContent = msg;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('addModal').addEventListener('click', e => {
+            if (e.target.id === 'addModal') closeAddFood();
+        });
+        document.getElementById('settingsModal').addEventListener('click', e => {
+            if (e.target.id === 'settingsModal') closeSettings();
+        });
+    </script>
+</body>
+</html>

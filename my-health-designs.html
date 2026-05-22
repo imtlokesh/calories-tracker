@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Health - Design Showcase</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=DM+Sans:wght@400;600;700;800;900&family=Righteous&family=Roboto:wght@400;500;700;900&family=Mulish:wght@400;600;700;800;900&family=Kumbh+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .design-selector {
+            padding: 12px;
+            background: #f0f0f0;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 700;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .design-btn {
+            padding: 6px 10px;
+            border: 2px solid #ccc;
+            background: white;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .design-btn.active {
+            border-color: #333;
+            background: #333;
+            color: white;
+        }
+
+        /* ===================== DESIGN 1: NEON GRADIENT WAVE ===================== */
+        .theme-neon {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .theme-neon .header {
+            background: linear-gradient(135deg, #00D9FF 0%, #FF006E 50%, #8000FF 100%);
+            color: white;
+            padding: 20px;
+            padding-top: 32px;
+        }
+
+        .theme-neon .header-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-neon .stat-label,
+        .theme-neon .meal-title,
+        .theme-neon .food-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        .theme-neon .stats-card {
+            background: linear-gradient(135deg, #fff 0%, #f0f9ff 100%);
+            margin: -30px 16px 0;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 217, 255, 0.2);
+            border: 2px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .theme-neon .stat-number {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00D9FF, #FF006E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .theme-neon .progress-fill {
+            background: linear-gradient(90deg, #00D9FF, #FF006E) !important;
+        }
+
+        .theme-neon .btn-primary {
+            background: linear-gradient(135deg, #00D9FF, #8000FF);
+            border: none;
+            color: white;
+            font-weight: 900;
+            box-shadow: 0 4px 16px rgba(0, 217, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .theme-neon .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.4);
+        }
+
+        /* ===================== DESIGN 2: PLAYFUL ROUNDED ===================== */
+        .theme-playful {
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .theme-playful .header {
+            background: linear-gradient(135deg, #FF6B5B 0%, #FFD93D 100%);
+            color: white;
+            padding: 20px;
+            padding-top: 32px;
+        }
+
+        .theme-playful .header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        .theme-playful .stat-label,
+        .theme-playful .meal-title,
+        .theme-playful .food-name {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .theme-playful .stats-card {
+            background: white;
+            margin: -30px 16px 0;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 12px 40px rgba(255, 107, 91, 0.15);
+            border: 3px solid #FFD93D;
+        }
+
+        .theme-playful .stat-box {
+            background: linear-gradient(135deg, #FF6B5B15, #FFD93D15);
+            padding: 16px;
+            border-radius: 20px;
+        }
+
+        .theme-playful .stat-number {
+            font-size: 26px;
+            font-weight: 900;
+            color: #FF6B5B;
+        }
+
+        .theme-playful .progress-fill {
+            background: linear-gradient(90deg, #FF6B5B, #FFD93D) !important;
+            border-radius: 4px;
+        }
+
+        .theme-playful .btn-primary {
+            background: linear-gradient(135deg, #FF6B5B, #6BCB77);
+            border: none;
+            color: white;
+            font-weight: 900;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(255, 107, 91, 0.3);
+        }
+
+        .theme-playful .meal-section {
+            background: linear-gradient(135deg, #FF6B5B10, #6BCB7710);
+            border-radius: 16px;
+            padding: 12px;
+        }
+
+        /* ===================== DESIGN 3: RETRO NEON 80s ===================== */
+        .theme-retro {
+            background: #0a0e27;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .theme-retro .app-container {
+            background: #0a0e27;
+            color: #fff;
+        }
+
+        .theme-retro .header {
+            background: linear-gradient(135deg, #FF006E 0%, #8000FF 100%);
+            color: white;
+            padding: 20px;
+            padding-top: 32px;
+            border-bottom: 3px solid #00FF88;
+        }
+
+        .theme-retro .header-title {
+            font-family: 'Righteous', sans-serif;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .theme-retro .stat-label,
+        .theme-retro .meal-title,
+        .theme-retro .food-name {
+            font-family: 'Righteous', sans-serif;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .theme-retro .stats-card {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2a1f4a 100%);
+            margin: -30px 16px 0;
+            border-radius: 8px;
+            padding: 24px;
+            border: 2px solid #00FF88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .theme-retro .stat-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: #FF006E;
+            text-shadow: 0 0 10px rgba(255, 0, 110, 0.5);
+        }
+
+        .theme-retro .stat-label {
+            color: #00FF88;
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+        }
+
+        .theme-retro .progress-bar {
+            background: #1a2a4a;
+            border: 1px solid #00FF88;
+        }
+
+        .theme-retro .progress-fill {
+            background: linear-gradient(90deg, #FF006E, #00FF88) !important;
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.5);
+        }
+
+        .theme-retro .meal-section {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2a1a3a 100%);
+            border: 1px solid #FF006E;
+            border-radius: 8px;
+        }
+
+        .theme-retro .btn-primary {
+            background: linear-gradient(135deg, #FF006E, #00FF88);
+            border: 2px solid #00FF88;
+            color: white;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        /* ===================== DESIGN 4: SOFT PASTEL + BRIGHT ===================== */
+        .theme-pastel {
+            font-family: 'Mulish', sans-serif;
+        }
+
+        .theme-pastel .header {
+            background: linear-gradient(135deg, #FFB4D9 0%, #A8D8FF 100%);
+            color: #333;
+            padding: 20px;
+            padding-top: 32px;
+        }
+
+        .theme-pastel .header-title {
+            font-family: 'Kumbh Sans', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #333;
+        }
+
+        .theme-pastel .stat-label,
+        .theme-pastel .meal-title,
+        .theme-pastel .food-name {
+            font-family: 'Kumbh Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        .theme-pastel .stats-card {
+            background: white;
+            margin: -30px 16px 0;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(168, 216, 255, 0.2);
+        }
+
+        .theme-pastel .stat-box {
+            background: linear-gradient(135deg, #FFB4D9 20%, #FFE5B4 80%);
+            padding: 16px;
+            border-radius: 16px;
+        }
+
+        .theme-pastel .stat-box:nth-child(2) {
+            background: linear-gradient(135deg, #A8D8FF 20%, #B4E7FF 80%);
+        }
+
+        .theme-pastel .stat-number {
+            font-size: 26px;
+            font-weight: 900;
+            color: #FF1493;
+        }
+
+        .theme-pastel .stat-box:nth-child(2) .stat-number {
+            color: #0066FF;
+        }
+
+        .theme-pastel .progress-fill {
+            background: linear-gradient(90deg, #FF1493, #FFD700) !important;
+        }
+
+        .theme-pastel .progress-fill.protein {
+            background: linear-gradient(90deg, #0066FF, #00D9FF) !important;
+        }
+
+        .theme-pastel .meal-section {
+            background: linear-gradient(135deg, #FFE5B415, #FFB4D915);
+            border-radius: 16px;
+            border: 2px solid #FFB4D9;
+            padding: 12px;
+        }
+
+        .theme-pastel .btn-primary {
+            background: linear-gradient(135deg, #FF1493, #FF69B4);
+            border: none;
+            color: white;
+            font-weight: 900;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(255, 20, 147, 0.3);
+        }
+
+        /* COMMON STYLES */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-user {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .header-date {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .progress-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-item {
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px 16px;
+            overflow-y: auto;
+            padding-bottom: 120px;
+        }
+
+        .meal-section {
+            margin-bottom: 20px;
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .meal-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .meal-cal {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .meal-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .food-item {
+            background: white;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .food-details {
+            flex: 1;
+        }
+
+        .food-name {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .food-portion {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .food-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .food-cal {
+            font-size: 13px;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .food-protein {
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 25px;
+            text-align: right;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 16px;
+        }
+
+        .theme-neon .btn-primary {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .theme-playful .btn-primary {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .theme-retro .btn-primary {
+            font-family: 'Righteous', sans-serif;
+        }
+
+        .theme-pastel .btn-primary {
+            font-family: 'Kumbh Sans', sans-serif;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .quick-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-neon .quick-btn {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .theme-playful .quick-btn {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .theme-retro .quick-btn {
+            font-family: 'Righteous', sans-serif;
+        }
+
+        .theme-pastel .quick-btn {
+            font-family: 'Kumbh Sans', sans-serif;
+        }
+
+        .quick-btn-icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="design-selector">
+        <button class="design-btn active" onclick="switchTheme('neon')">✨ Neon</button>
+        <button class="design-btn" onclick="switchTheme('playful')">🎨 Playful</button>
+        <button class="design-btn" onclick="switchTheme('retro')">⚡ Retro</button>
+        <button class="design-btn" onclick="switchTheme('pastel')">🌸 Pastel</button>
+    </div>
+
+    <div class="app-container theme-neon" id="appContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="header-logo">
+                    <div class="logo-box">
+                        <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="35" r="18" fill="white"/>
+                            <path d="M 50 60 Q 35 75 30 90 L 70 90 Q 65 75 50 60 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="header-info">
+                        <div class="header-title">My Health</div>
+                        <div class="header-user">Lokesh</div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-date">Wed, May 21</div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="stats-card">
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-number">1,250</div>
+                    <div class="stat-label">Calories</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">35g</div>
+                    <div class="stat-label">Protein</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Daily Progress</span>
+                        <span>49%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 49%"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>Protein Goal</span>
+                        <span>62%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 62%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="alert('Add Food clicked')">
+                    <span class="quick-btn-icon">🍎</span>
+                    <span>Add Food</span>
+                </button>
+                <button class="quick-btn" onclick="alert('Photo clicked')">
+                    <span class="quick-btn-icon">📷</span>
+                    <span>Photo</span>
+                </button>
+                <button class="quick-btn" onclick="alert('Profile clicked')">
+                    <span class="quick-btn-icon">⚙️</span>
+                    <span>Profile</span>
+                </button>
+            </div>
+
+            <!-- Breakfast -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">Breakfast</div>
+                    <div class="meal-cal">450 cal</div>
+                </div>
+                <div class="meal-items">
+                    <div class="food-item">
+                        <div class="food-details">
+                            <div class="food-name">Roti</div>
+                            <div class="food-portion">2 rotis</div>
+                        </div>
+                        <div class="food-right">
+                            <div class="food-cal">142 cal</div>
+                            <div class="food-protein">5.6g</div>
+                        </div>
+                    </div>
+                    <div class="food-item">
+                        <div class="food-details">
+                            <div class="food-name">Milk</div>
+                            <div class="food-portion">240ml</div>
+                        </div>
+                        <div class="food-right">
+                            <div class="food-cal">149 cal</div>
+                            <div class="food-protein">8g</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lunch -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">Lunch</div>
+                    <div class="meal-cal">0 cal</div>
+                </div>
+                <div class="meal-items">
+                    <div class="empty-state">Add foods to this meal</div>
+                </div>
+            </div>
+
+            <!-- Dinner -->
+            <div class="meal-section">
+                <div class="meal-header">
+                    <div class="meal-title">Dinner</div>
+                    <div class="meal-cal">0 cal</div>
+                </div>
+                <div class="meal-items">
+                    <div class="empty-state">Add foods to this meal</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTheme(theme) {
+            const container = document.getElementById('appContainer');
+            const buttons = document.querySelectorAll('.design-btn');
+
+            // Remove all theme classes
+            container.classList.remove('theme-neon', 'theme-playful', 'theme-retro', 'theme-pastel');
+
+            // Add new theme class
+            container.classList.add('theme-' + theme);
+
+            // Update button states
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
