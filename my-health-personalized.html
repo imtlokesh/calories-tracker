@@ -43,11 +43,10 @@
             -webkit-font-smoothing: antialiased;
             -webkit-text-size-adjust: 100%;
             -webkit-user-scalable: no;
-            padding: 0;
             margin: 0;
+            padding: 0;
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
         .app-container {
@@ -55,21 +54,19 @@
             max-width: 480px;
             margin: 0 auto;
             background: white;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
-            padding-top: max(20px, env(safe-area-inset-top));
-            padding-bottom: max(20px, env(safe-area-inset-bottom));
-            box-sizing: border-box;
-            overflow: hidden;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .header {
             background: linear-gradient(135deg, #00BCD4 0%, #009688 100%);
             color: white;
             padding: 20px;
-            padding-top: 16px;
+            padding-top: 20px;
         }
 
         .header-top {
