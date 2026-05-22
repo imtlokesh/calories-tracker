@@ -7,7 +7,41 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="My Health">
     <link rel="manifest" href="./manifest.json">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>My Health - Personalized Nutrition Tracker</title>
+
+    <!-- Automatic Cache Busting Script -->
+    <script>
+        (function() {
+            const STORAGE_KEY = 'myHealthVersion';
+
+            // Check version on every load
+            fetch('./version.json?' + new Date().getTime())
+                .then(response => response.json())
+                .then(data => {
+                    const currentVersion = localStorage.getItem(STORAGE_KEY);
+                    const newVersion = data.timestamp;
+
+                    if (currentVersion && currentVersion !== newVersion.toString()) {
+                        console.log('New version detected. Clearing cache and reloading...');
+                        // Clear localStorage to reset all data (optional - only if you want fresh data)
+                        // localStorage.clear();
+
+                        // Update version
+                        localStorage.setItem(STORAGE_KEY, newVersion.toString());
+
+                        // Force reload bypassing cache
+                        window.location.href = window.location.href.split('?')[0] + '?v=' + newVersion;
+                    } else if (!currentVersion) {
+                        // First visit
+                        localStorage.setItem(STORAGE_KEY, newVersion.toString());
+                    }
+                })
+                .catch(error => console.log('Version check failed:', error));
+        })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>

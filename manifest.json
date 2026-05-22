@@ -2,7 +2,7 @@
   "name": "My Health - Nutrition Tracker",
   "short_name": "My Health",
   "description": "Personalized calorie and protein tracker with multi-profile support",
-  "start_url": "./my-health-personalized.html",
+  "start_url": "./my-health-personalized.html?v=1.0",
   "display": "standalone",
   "scope": "./",
   "background_color": "#ffffff",
