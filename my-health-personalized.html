@@ -1817,13 +1817,13 @@
 
         function updateMeals() {
             const log = getTodayLog();
-            console.log('updateMeals called, log:', log);
-            const html = ['breakfast', 'lunch', 'dinner', 'snacks'].map(meal => {
+            const html = ['breakfast', 'lunch', 'dinner', 'snacks']
+                .filter(meal => log[meal] && log[meal].length > 0)  // Only show meals with items
+                .map(meal => {
                 const items = log[meal] || [];
                 const cal = items.reduce((s, f) => s + f.cal, 0);
                 const protein = items.reduce((s, f) => s + f.protein, 0);
-                const itemsHtml = !items.length ? ''
-                    : items.map((f, i) => {
+                const itemsHtml = items.map((f, i) => {
                         // Format quantity to remove unnecessary decimals
                         const quantity = parseFloat(f.quantity);
                         const quantityStr = Number.isInteger(quantity) ? quantity.toString() : quantity.toFixed(1);
@@ -1879,15 +1879,7 @@
                 `;
             }).join('');
 
-            const mealSectionsElement = document.getElementById('mealSections');
-            console.log('mealSections element:', mealSectionsElement);
-            console.log('html to render:', html);
-            if (mealSectionsElement) {
-                mealSectionsElement.innerHTML = html;
-                console.log('mealSections innerHTML set successfully');
-            } else {
-                console.error('mealSections element not found!');
-            }
+            document.getElementById('mealSections').innerHTML = html;
         }
 
         function updateDate() {
