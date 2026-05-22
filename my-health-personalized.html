@@ -271,8 +271,7 @@
 
         .progress-section {
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--neutral-200);
+            padding-top: 0;
         }
 
         .progress-item {
@@ -1749,9 +1748,9 @@
             document.getElementById('calTarget').textContent = 'Target: ' + nutritionTargets.calories;
             document.getElementById('proteinTarget').textContent = 'Target: ' + nutritionTargets.protein + 'g';
 
-            // Update progress bars with values and percentages
-            document.getElementById('calBarText').textContent = Math.round(totalCal) + ' / ' + nutritionTargets.calories + ' cal | ' + Math.round(calPercentage) + '%';
-            document.getElementById('proteinBarText').textContent = (totalProtein < 1 ? totalProtein.toFixed(1) : Math.round(totalProtein)) + ' / ' + nutritionTargets.protein + 'g | ' + Math.round(proteinPercentage) + '%';
+            // Update progress bars with consumption and percentages only
+            document.getElementById('calBarText').textContent = Math.round(totalCal) + ' cal | ' + Math.round(calPercentage) + '%';
+            document.getElementById('proteinBarText').textContent = (totalProtein < 1 ? totalProtein.toFixed(1) : Math.round(totalProtein)) + 'g | ' + Math.round(proteinPercentage) + '%';
             document.getElementById('calBar').style.width = calPercentage + '%';
             document.getElementById('proteinBar').style.width = proteinPercentage + '%';
 
