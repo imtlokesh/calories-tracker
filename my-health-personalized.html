@@ -1547,7 +1547,14 @@
             'whole wheat bread': { cal: 80, protein: 4, carbs: 14, fats: 1, portionType: 'unit', portionValue: '1 slice (28g)', portionGrams: 28 },
             'bagel': { cal: 289, protein: 11, carbs: 56, fats: 1.5, portionType: 'unit', portionValue: '1 bagel (89g)', portionGrams: 89 },
             'english muffin': { cal: 134, protein: 4.5, carbs: 26, fats: 1, portionType: 'unit', portionValue: '1 muffin (57g)', portionGrams: 57 },
-            'oatmeal (cooked)': { cal: 150, protein: 5, carbs: 27, fats: 3, portionType: 'weight', portionValue: '100g cooked', portionGrams: 100 },
+            'oatmeal (cooked)': {
+                servingSizes: [
+                    { name: '1 cup (240g)', grams: 240, cal: 360, protein: 12, carbs: 64.8, fats: 7.2 },
+                    { name: '½ cup (120g)', grams: 120, cal: 180, protein: 6, carbs: 32.4, fats: 3.6 },
+                    { name: '100 grams', grams: 100, cal: 150, protein: 5, carbs: 27, fats: 3 },
+                    { name: '1 small bowl (150g)', grams: 150, cal: 225, protein: 7.5, carbs: 40.5, fats: 4.5 }
+                ]
+            },
 
             // American Proteins
             'chicken breast (cooked)': { cal: 165, protein: 31, carbs: 0, fats: 3.6, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
