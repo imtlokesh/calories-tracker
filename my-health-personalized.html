@@ -1410,7 +1410,14 @@
                     { name: '½ cup (75g)', grams: 75, cal: 97, protein: 2, carbs: 21, fats: 0.22 }
                 ]
             },
-            'jasmine rice (cooked)': { cal: 130, protein: 2.7, carbs: 28, fats: 0.3, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
+            'jasmine rice (cooked)': {
+                servingSizes: [
+                    { name: '1 cup (150g)', grams: 150, cal: 195, protein: 4.05, carbs: 42, fats: 0.45 },
+                    { name: '1 small bowl (100g)', grams: 100, cal: 130, protein: 2.7, carbs: 28, fats: 0.3 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 260, protein: 5.4, carbs: 56, fats: 0.6 },
+                    { name: '½ cup (75g)', grams: 75, cal: 97, protein: 2, carbs: 21, fats: 0.22 }
+                ]
+            },
             'millet (bajra)': { cal: 356, protein: 11, carbs: 67, fats: 5, portionType: 'weight', portionValue: '100g dry', portionGrams: 100 },
             'ragi (finger millet)': { cal: 328, protein: 6.7, carbs: 72, fats: 1.3, portionType: 'weight', portionValue: '100g dry', portionGrams: 100 },
 
@@ -1423,11 +1430,46 @@
                     { name: '½ bowl (75g)', grams: 75, cal: 87, protein: 6.9, carbs: 15, fats: 0.3 }
                 ]
             },
-            'chana dal (split chickpeas cooked)': { cal: 134, protein: 8.9, carbs: 23, fats: 2.1, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'moong dal (mung bean) cooked': { cal: 95, protein: 7, carbs: 17, fats: 0.4, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'kala chana (black chickpeas)': { cal: 134, protein: 15, carbs: 24, fats: 2, portionType: 'weight', portionValue: '100g cooked', portionGrams: 100 },
-            'rajma (kidney beans)': { cal: 127, protein: 8.7, carbs: 23, fats: 0.4, portionType: 'weight', portionValue: '100g cooked', portionGrams: 100 },
-            'arhar dal (pigeon pea)': { cal: 116, protein: 10, carbs: 20, fats: 0.5, portionType: 'weight', portionValue: '100g cooked', portionGrams: 100 },
+            'chana dal (split chickpeas cooked)': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 201, protein: 13.35, carbs: 34.5, fats: 3.15 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 268, protein: 17.8, carbs: 46, fats: 4.2 },
+                    { name: '100 grams', grams: 100, cal: 134, protein: 8.9, carbs: 23, fats: 2.1 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 100, protein: 6.7, carbs: 17.25, fats: 1.57 }
+                ]
+            },
+            'moong dal (mung bean) cooked': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 142, protein: 10.5, carbs: 25.5, fats: 0.6 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 190, protein: 14, carbs: 34, fats: 0.8 },
+                    { name: '100 grams', grams: 100, cal: 95, protein: 7, carbs: 17, fats: 0.4 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 71, protein: 5.25, carbs: 12.75, fats: 0.3 }
+                ]
+            },
+            'kala chana (black chickpeas)': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 201, protein: 22.5, carbs: 36, fats: 3 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 268, protein: 30, carbs: 48, fats: 4 },
+                    { name: '100 grams', grams: 100, cal: 134, protein: 15, carbs: 24, fats: 2 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 100, protein: 11.25, carbs: 18, fats: 1.5 }
+                ]
+            },
+            'rajma (kidney beans)': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 190, protein: 13.05, carbs: 34.5, fats: 0.6 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 254, protein: 17.4, carbs: 46, fats: 0.8 },
+                    { name: '100 grams', grams: 100, cal: 127, protein: 8.7, carbs: 23, fats: 0.4 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 95, protein: 6.5, carbs: 17.25, fats: 0.3 }
+                ]
+            },
+            'arhar dal (pigeon pea)': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 174, protein: 15, carbs: 30, fats: 0.75 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 232, protein: 20, carbs: 40, fats: 1 },
+                    { name: '100 grams', grams: 100, cal: 116, protein: 10, carbs: 20, fats: 0.5 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 87, protein: 7.5, carbs: 15, fats: 0.37 }
+                ]
+            },
 
             // Indian Vegetables
             'bhindi (okra) cooked': { cal: 33, protein: 1.9, carbs: 7, fats: 0.2, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
@@ -1750,48 +1792,314 @@
 
             // ===== BUTTER & NUT BUTTERS =====
             // Dairy Butters
-            'butter (salted)': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'butter (unsalted)': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'clarified butter (ghee)': { cal: 892, protein: 0, carbs: 0, fats: 99, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'brown butter': { cal: 717, protein: 1, carbs: 0, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'cultured butter': { cal: 717, protein: 0.9, carbs: 0.3, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'grass-fed butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'irish butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'european butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'kerrygold butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'whipped butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'sweet cream butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'light butter': { cal: 357, protein: 0.5, carbs: 0.1, fats: 40, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'herb butter': { cal: 717, protein: 0.9, carbs: 0.5, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'garlic butter': { cal: 717, protein: 1, carbs: 1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
+            'butter (salted)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'butter (unsalted)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'clarified butter (ghee)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 124, protein: 0, carbs: 0, fats: 14 },
+                    { name: '1 teaspoon', grams: 5, cal: 45, protein: 0, carbs: 0, fats: 5 },
+                    { name: '2 tablespoons', grams: 28, cal: 248, protein: 0, carbs: 0, fats: 28 },
+                    { name: '100 grams', grams: 100, cal: 892, protein: 0, carbs: 0, fats: 99 }
+                ]
+            },
+            'brown butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 1, carbs: 0, fats: 81 }
+                ]
+            },
+            'cultured butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.3, fats: 81 }
+                ]
+            },
+            'grass-fed butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'irish butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'european butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'kerrygold butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'whipped butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'sweet cream butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
+            'light butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 50, protein: 0.1, carbs: 0, fats: 5.7 },
+                    { name: '1 teaspoon', grams: 5, cal: 18, protein: 0, carbs: 0, fats: 2 },
+                    { name: '2 tablespoons', grams: 28, cal: 100, protein: 0.3, carbs: 0, fats: 11.4 },
+                    { name: '100 grams', grams: 100, cal: 357, protein: 0.5, carbs: 0.1, fats: 40 }
+                ]
+            },
+            'herb butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0.1, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0.2, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.5, fats: 81 }
+                ]
+            },
+            'garlic butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0.1, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0.2, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 1, carbs: 1, fats: 81 }
+                ]
+            },
 
             // Plant-Based Butters
-            'peanut butter': { cal: 94, protein: 4, carbs: 3, fats: 8, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'peanut butter (natural)': { cal: 95, protein: 4.5, carbs: 2.5, fats: 8.5, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'almond butter': { cal: 98, protein: 3.5, carbs: 3.4, fats: 9, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'almond butter (natural)': { cal: 100, protein: 3.6, carbs: 3.1, fats: 9.2, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'cashew butter': { cal: 99, protein: 3.4, carbs: 4.7, fats: 8.4, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'sunflower seed butter': { cal: 93, protein: 3.7, carbs: 3.3, fats: 8.1, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'tahini (sesame butter)': { cal: 94, protein: 3.2, carbs: 3.2, fats: 8.6, portionType: 'unit', portionValue: '1 tbsp (15g)', portionGrams: 15 },
-            'walnut butter': { cal: 98, protein: 4.3, carbs: 2.1, fats: 9.4, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'pecan butter': { cal: 97, protein: 3.4, carbs: 2.7, fats: 9.7, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'hazelnut butter': { cal: 107, protein: 3.8, carbs: 4.5, fats: 10, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'pistachio butter': { cal: 94, protein: 3.9, carbs: 4, fats: 8.3, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'macadamia nut butter': { cal: 112, protein: 2.2, carbs: 3.8, fats: 11.5, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'coconut butter': { cal: 107, protein: 3.3, carbs: 4, fats: 10, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'sunflower butter (no sugar)': { cal: 88, protein: 3.8, carbs: 2.5, fats: 7.8, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'pumpkin seed butter': { cal: 93, protein: 4.1, carbs: 3.2, fats: 8.2, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
+            'peanut butter (plain)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 94, protein: 4, carbs: 3, fats: 8 },
+                    { name: '1 teaspoon', grams: 5, cal: 29, protein: 1.2, carbs: 0.9, fats: 2.5 },
+                    { name: '2 tablespoons', grams: 32, cal: 188, protein: 8, carbs: 6, fats: 16 },
+                    { name: '100 grams', grams: 100, cal: 588, protein: 25, carbs: 20, fats: 50 }
+                ]
+            },
+            'peanut butter (natural)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 95, protein: 4.5, carbs: 2.5, fats: 8.5 },
+                    { name: '1 teaspoon', grams: 5, cal: 30, protein: 1.4, carbs: 0.8, fats: 2.7 },
+                    { name: '2 tablespoons', grams: 32, cal: 190, protein: 9, carbs: 5, fats: 17 },
+                    { name: '100 grams', grams: 100, cal: 594, protein: 28, carbs: 15, fats: 53 }
+                ]
+            },
+            'almond butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 98, protein: 3.5, carbs: 3.4, fats: 9 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.1, carbs: 1.1, fats: 2.8 },
+                    { name: '2 tablespoons', grams: 32, cal: 196, protein: 7, carbs: 6.8, fats: 18 },
+                    { name: '100 grams', grams: 100, cal: 614, protein: 22, carbs: 21, fats: 56 }
+                ]
+            },
+            'almond butter (natural)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 100, protein: 3.6, carbs: 3.1, fats: 9.2 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.1, carbs: 1, fats: 2.9 },
+                    { name: '2 tablespoons', grams: 32, cal: 200, protein: 7.2, carbs: 6.2, fats: 18.4 },
+                    { name: '100 grams', grams: 100, cal: 625, protein: 22.5, carbs: 19.4, fats: 57.5 }
+                ]
+            },
+            'cashew butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 99, protein: 3.4, carbs: 4.7, fats: 8.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.1, carbs: 1.5, fats: 2.6 },
+                    { name: '2 tablespoons', grams: 32, cal: 198, protein: 6.8, carbs: 9.4, fats: 16.8 },
+                    { name: '100 grams', grams: 100, cal: 619, protein: 21, carbs: 29, fats: 53 }
+                ]
+            },
+            'sunflower seed butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 93, protein: 3.7, carbs: 3.3, fats: 8.1 },
+                    { name: '1 teaspoon', grams: 5, cal: 29, protein: 1.2, carbs: 1, fats: 2.5 },
+                    { name: '2 tablespoons', grams: 32, cal: 186, protein: 7.4, carbs: 6.6, fats: 16.2 },
+                    { name: '100 grams', grams: 100, cal: 581, protein: 23, carbs: 20, fats: 51 }
+                ]
+            },
+            'tahini (sesame butter)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 15, cal: 94, protein: 3.2, carbs: 3.2, fats: 8.6 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.1, carbs: 1.1, fats: 2.9 },
+                    { name: '2 tablespoons', grams: 30, cal: 188, protein: 6.4, carbs: 6.4, fats: 17.2 },
+                    { name: '100 grams', grams: 100, cal: 627, protein: 21, carbs: 21, fats: 57 }
+                ]
+            },
+            'walnut butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 98, protein: 4.3, carbs: 2.1, fats: 9.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.3, carbs: 0.7, fats: 3 },
+                    { name: '2 tablespoons', grams: 32, cal: 196, protein: 8.6, carbs: 4.2, fats: 18.8 },
+                    { name: '100 grams', grams: 100, cal: 614, protein: 27, carbs: 13, fats: 59 }
+                ]
+            },
+            'pecan butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 97, protein: 3.4, carbs: 2.7, fats: 9.7 },
+                    { name: '1 teaspoon', grams: 5, cal: 30, protein: 1.1, carbs: 0.8, fats: 3 },
+                    { name: '2 tablespoons', grams: 32, cal: 194, protein: 6.8, carbs: 5.4, fats: 19.4 },
+                    { name: '100 grams', grams: 100, cal: 606, protein: 21, carbs: 17, fats: 61 }
+                ]
+            },
+            'hazelnut butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 107, protein: 3.8, carbs: 4.5, fats: 10 },
+                    { name: '1 teaspoon', grams: 5, cal: 33, protein: 1.2, carbs: 1.4, fats: 3.1 },
+                    { name: '2 tablespoons', grams: 32, cal: 214, protein: 7.6, carbs: 9, fats: 20 },
+                    { name: '100 grams', grams: 100, cal: 669, protein: 24, carbs: 28, fats: 62 }
+                ]
+            },
+            'pistachio butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 94, protein: 3.9, carbs: 4, fats: 8.3 },
+                    { name: '1 teaspoon', grams: 5, cal: 29, protein: 1.2, carbs: 1.3, fats: 2.6 },
+                    { name: '2 tablespoons', grams: 32, cal: 188, protein: 7.8, carbs: 8, fats: 16.6 },
+                    { name: '100 grams', grams: 100, cal: 588, protein: 24, carbs: 25, fats: 52 }
+                ]
+            },
+            'macadamia nut butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 112, protein: 2.2, carbs: 3.8, fats: 11.5 },
+                    { name: '1 teaspoon', grams: 5, cal: 35, protein: 0.7, carbs: 1.2, fats: 3.6 },
+                    { name: '2 tablespoons', grams: 32, cal: 224, protein: 4.4, carbs: 7.6, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 700, protein: 14, carbs: 24, fats: 72 }
+                ]
+            },
+            'coconut butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 107, protein: 3.3, carbs: 4, fats: 10 },
+                    { name: '1 teaspoon', grams: 5, cal: 33, protein: 1, carbs: 1.3, fats: 3.1 },
+                    { name: '2 tablespoons', grams: 32, cal: 214, protein: 6.6, carbs: 8, fats: 20 },
+                    { name: '100 grams', grams: 100, cal: 669, protein: 21, carbs: 25, fats: 62 }
+                ]
+            },
+            'sunflower butter (no sugar)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 88, protein: 3.8, carbs: 2.5, fats: 7.8 },
+                    { name: '1 teaspoon', grams: 5, cal: 27, protein: 1.2, carbs: 0.8, fats: 2.4 },
+                    { name: '2 tablespoons', grams: 32, cal: 176, protein: 7.6, carbs: 5, fats: 15.6 },
+                    { name: '100 grams', grams: 100, cal: 550, protein: 24, carbs: 15, fats: 49 }
+                ]
+            },
+            'pumpkin seed butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 93, protein: 4.1, carbs: 3.2, fats: 8.2 },
+                    { name: '1 teaspoon', grams: 5, cal: 29, protein: 1.3, carbs: 1, fats: 2.6 },
+                    { name: '2 tablespoons', grams: 32, cal: 186, protein: 8.2, carbs: 6.4, fats: 16.4 },
+                    { name: '100 grams', grams: 100, cal: 581, protein: 26, carbs: 20, fats: 51 }
+                ]
+            },
 
             // Flavored & Specialty Butters
-            'almond butter (honey)': { cal: 106, protein: 3.5, carbs: 5.5, fats: 8.8, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'peanut butter (chocolate)': { cal: 105, protein: 3.8, carbs: 6, fats: 8, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'almond butter (cinnamon)': { cal: 99, protein: 3.5, carbs: 4, fats: 8.9, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'cashew butter (date)': { cal: 103, protein: 3.2, carbs: 6, fats: 8.2, portionType: 'unit', portionValue: '1 tbsp (16g)', portionGrams: 16 },
-            'peanut butter (powdered)': { cal: 25, protein: 4.5, carbs: 1.5, fats: 0.5, portionType: 'unit', portionValue: '2 tbsp (12g)', portionGrams: 12 },
-            'miso butter': { cal: 720, protein: 3, carbs: 2, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'chili butter': { cal: 717, protein: 0.9, carbs: 1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'truffle butter': { cal: 717, protein: 0.9, carbs: 0.5, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'curry butter': { cal: 720, protein: 0.9, carbs: 1, fats: 81, portionType: 'unit', portionValue: '1 tbsp (14g)', portionGrams: 14 }
+            'almond butter (honey)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 106, protein: 3.5, carbs: 5.5, fats: 8.8 },
+                    { name: '1 teaspoon', grams: 5, cal: 33, protein: 1.1, carbs: 1.7, fats: 2.8 },
+                    { name: '2 tablespoons', grams: 32, cal: 212, protein: 7, carbs: 11, fats: 17.6 },
+                    { name: '100 grams', grams: 100, cal: 663, protein: 22, carbs: 34, fats: 55 }
+                ]
+            },
+            'peanut butter (chocolate)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 105, protein: 3.8, carbs: 6, fats: 8 },
+                    { name: '1 teaspoon', grams: 5, cal: 33, protein: 1.2, carbs: 1.9, fats: 2.5 },
+                    { name: '2 tablespoons', grams: 32, cal: 210, protein: 7.6, carbs: 12, fats: 16 },
+                    { name: '100 grams', grams: 100, cal: 656, protein: 24, carbs: 38, fats: 50 }
+                ]
+            },
+            'almond butter (cinnamon)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 99, protein: 3.5, carbs: 4, fats: 8.9 },
+                    { name: '1 teaspoon', grams: 5, cal: 31, protein: 1.1, carbs: 1.3, fats: 2.8 },
+                    { name: '2 tablespoons', grams: 32, cal: 198, protein: 7, carbs: 8, fats: 17.8 },
+                    { name: '100 grams', grams: 100, cal: 619, protein: 22, carbs: 25, fats: 56 }
+                ]
+            },
+            'cashew butter (date)': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 103, protein: 3.2, carbs: 6, fats: 8.2 },
+                    { name: '1 teaspoon', grams: 5, cal: 32, protein: 1, carbs: 1.9, fats: 2.6 },
+                    { name: '2 tablespoons', grams: 32, cal: 206, protein: 6.4, carbs: 12, fats: 16.4 },
+                    { name: '100 grams', grams: 100, cal: 644, protein: 20, carbs: 38, fats: 51 }
+                ]
+            },
+            'peanut butter (powdered)': {
+                servingSizes: [
+                    { name: '2 tablespoons', grams: 12, cal: 25, protein: 4.5, carbs: 1.5, fats: 0.5 },
+                    { name: '1 tablespoon', grams: 6, cal: 13, protein: 2.3, carbs: 0.8, fats: 0.25 },
+                    { name: '4 tablespoons', grams: 24, cal: 50, protein: 9, carbs: 3, fats: 1 },
+                    { name: '100 grams', grams: 100, cal: 208, protein: 38, carbs: 12, fats: 4 }
+                ]
+            },
+            'miso butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.4, carbs: 0.3, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0.1, carbs: 0.1, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.8, carbs: 0.6, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 720, protein: 3, carbs: 2, fats: 81 }
+                ]
+            },
+            'chili butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0.1, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0.2, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 1, fats: 81 }
+                ]
+            },
+            'truffle butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0.1, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0.2, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.5, fats: 81 }
+                ]
+            },
+            'curry butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0.1, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0.2, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 720, protein: 0.9, carbs: 1, fats: 81 }
+                ]
+            }
         };
 
         // Store scroll position to prevent viewport jump on Safari
@@ -2154,15 +2462,21 @@
 
             const matches = Object.keys(foods).filter(f => f.toLowerCase().includes(query));
             results.innerHTML = !matches.length ? '<div class="empty-state">No foods found</div>'
-                : matches.map(f => `
-                    <div class="search-item" onclick="selectFoodForQuantity('${f}')">
-                        <div>
-                            <div class="search-food-name">${f}</div>
-                            <div class="search-portion">${foods[f].portionValue}</div>
+                : matches.map(f => {
+                    const food = foods[f];
+                    // Handle foods with servingSizes array
+                    const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
+                    const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
+                    return `
+                        <div class="search-item" onclick="selectFoodForQuantity('${f}')">
+                            <div>
+                                <div class="search-food-name">${f}</div>
+                                <div class="search-portion">${portionDisplay}</div>
+                            </div>
+                            <div class="search-cal">${calDisplay}</div>
                         </div>
-                        <div class="search-cal">${Math.round(foods[f].cal)}</div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
         }
 
         // Unit conversion system
@@ -2823,15 +3137,21 @@
 
             const matches = Object.keys(foods).filter(f => f.toLowerCase().includes(query));
             results.innerHTML = !matches.length ? '<div class="empty-state">No foods found</div>'
-                : matches.map(f => `
-                    <div class="search-item" onclick="selectFoodFromPhoto('${f}')">
-                        <div>
-                            <div class="search-food-name">${f}</div>
-                            <div class="search-portion">${foods[f].portionValue}</div>
+                : matches.map(f => {
+                    const food = foods[f];
+                    // Handle foods with servingSizes array
+                    const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
+                    const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
+                    return `
+                        <div class="search-item" onclick="selectFoodFromPhoto('${f}')">
+                            <div>
+                                <div class="search-food-name">${f}</div>
+                                <div class="search-portion">${portionDisplay}</div>
+                            </div>
+                            <div class="search-cal">${calDisplay}</div>
                         </div>
-                        <div class="search-cal">${Math.round(foods[f].cal)}</div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
         }
 
         function selectFoodFromPhoto(foodName) {
