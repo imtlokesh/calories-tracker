@@ -448,6 +448,21 @@
             margin-bottom: 4px;
         }
 
+        .food-name-portion {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .food-name-portion .food-name {
+            margin-bottom: 0;
+        }
+
+        .food-name-portion .food-portion {
+            margin-bottom: 0;
+        }
+
         .food-macros {
             font-size: 11px;
             color: #999;
@@ -1909,8 +1924,10 @@
                         return `
                             <div class="food-item">
                                 <div class="food-details">
-                                    <div class="food-name">${f.name}</div>
-                                    <div class="food-portion">${portionDisplay}</div>
+                                    <div class="food-name-portion">
+                                        <div class="food-name">${f.name}</div>
+                                        <div class="food-portion">${portionDisplay}</div>
+                                    </div>
                                     <div class="food-macros">
                                         <span class="food-macro">Carbs: <strong>${(f.carbs < 1 ? f.carbs.toFixed(1) : Math.round(f.carbs))}g</strong></span>
                                         <span class="food-macro">Fats: <strong>${(f.fats < 1 ? f.fats.toFixed(1) : Math.round(f.fats))}g</strong></span>
