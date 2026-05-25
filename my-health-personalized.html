@@ -3041,7 +3041,46 @@
             document.getElementById('similarFoodsContainer').innerHTML = '';
         }
 
-        function searchSimilarFoods() {
+        // USDA FoodData Central API integration
+        async function searchUSDAFood(query) {
+            try {
+                const response = await fetch(
+                    `https://fdc.nal.usda.gov/api/foods/search?query=${encodeURIComponent(query)}&pageSize=10&pageNumber=0`
+                );
+                const data = await response.json();
+                return data.foods || [];
+            } catch (e) {
+                console.error('USDA API error:', e);
+                return [];
+            }
+        }
+
+        function extractNutritionFromUSDA(food) {
+            // Extract nutrition values from USDA API response
+            let calories = 0, protein = 0, carbs = 0, fats = 0;
+
+            if (food.foodNutrients) {
+                food.foodNutrients.forEach(nutrient => {
+                    const nutrientName = (nutrient.nutrientName || '').toLowerCase();
+                    if (nutrientName.includes('energy') && nutrientName.includes('kcal')) {
+                        calories = nutrient.value || 0;
+                    }
+                    if (nutrientName.includes('protein')) {
+                        protein = nutrient.value || 0;
+                    }
+                    if (nutrientName.includes('carbohydrate')) {
+                        carbs = nutrient.value || 0;
+                    }
+                    if (nutrientName.includes('fat') && !nutrientName.includes('saturated')) {
+                        fats = nutrient.value || 0;
+                    }
+                });
+            }
+
+            return { calories: Math.round(calories * 10) / 10, protein: Math.round(protein * 10) / 10, carbs: Math.round(carbs * 10) / 10, fats: Math.round(fats * 10) / 10 };
+        }
+
+        async function searchSimilarFoods() {
             const query = document.getElementById('customFoodName').value.toLowerCase().trim();
             const container = document.getElementById('similarFoodsContainer');
 
@@ -3050,19 +3089,20 @@
                 return;
             }
 
-            // Search in both built-in and custom foods
+            container.innerHTML = '<div style="color: #999; font-size: 13px; padding: 10px; text-align: center;">🔍 Searching...</div>';
+
+            // Search in both built-in and custom foods first
             const allFoods = { ...foods, ...customFoods };
-            const matches = Object.keys(allFoods)
+            const localMatches = Object.keys(allFoods)
                 .filter(f => f.toLowerCase().includes(query))
-                .slice(0, 5);  // Show top 5 matches
+                .slice(0, 5);
 
-            if (matches.length === 0) {
-                container.innerHTML = '<div style="color: #666; font-size: 13px; padding: 10px; text-align: center;">No similar foods found</div>';
-                return;
-            }
+            let html = '';
 
-            container.innerHTML = '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">Similar foods found:</div>' +
-                matches.map(f => {
+            // Show local matches if found
+            if (localMatches.length > 0) {
+                html += '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">📚 From our database:</div>';
+                html += localMatches.map(f => {
                     const food = allFoods[f];
                     const servingSize = food.servingSizes ? food.servingSizes[0] : null;
                     const cal = servingSize ? servingSize.cal : food.cal;
@@ -3080,6 +3120,34 @@
                         </div>
                     `;
                 }).join('');
+            }
+
+            // Search USDA API for additional matches
+            const usdaFoods = await searchUSDAFood(query);
+            if (usdaFoods.length > 0) {
+                html += (localMatches.length > 0 ? '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From USDA database:</div>' : '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From USDA database:</div>');
+
+                html += usdaFoods.slice(0, 5).map(food => {
+                    const nutrition = extractNutritionFromUSDA(food);
+                    const displayName = food.description || food.name || 'Unknown';
+                    const truncatedName = displayName.length > 60 ? displayName.substring(0, 60) + '...' : displayName;
+                    const servingSize = food.servingSize ? `${food.servingSize}${food.servingSizeUnit || 'g'}` : '100g';
+
+                    return `
+                        <div onclick="selectUSDAFood('${displayName.replace(/'/g, "\\'")}', ${nutrition.calories}, ${nutrition.protein}, ${nutrition.carbs}, ${nutrition.fats}, '${servingSize.replace(/'/g, "\\'")}')"
+                             style="padding: 10px; margin: 5px 0; background: #e8f5e9; border-radius: 6px; cursor: pointer; border-left: 3px solid #4CAF50;">
+                            <div style="font-weight: 600; color: #333;">${truncatedName}</div>
+                            <div style="font-size: 12px; color: #666;">${Math.round(nutrition.calories)} cal | ${servingSize}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (!html) {
+                html = '<div style="color: #666; font-size: 13px; padding: 10px; text-align: center;">No foods found. You can manually enter details.</div>';
+            }
+
+            container.innerHTML = html;
         }
 
         function selectSimilarFood(foodName, cal, protein, carbs, fats, servingName, servingGrams) {
@@ -3097,7 +3165,25 @@
             document.getElementById('customFoodStep1').style.display = 'none';
             document.getElementById('customFoodStep2').style.display = 'block';
 
-            showNotification(`Nutrition details auto-filled from ${foodName}`);
+            showNotification(`✓ Nutrition details auto-filled from ${foodName}`);
+        }
+
+        function selectUSDAFood(foodName, cal, protein, carbs, fats, servingSize) {
+            // Auto-fill the nutrition details from USDA API
+            const userFoodName = document.getElementById('customFoodName').value.trim();
+            document.getElementById('customFoodNameDisplay').value = userFoodName;
+            document.getElementById('customFoodCal').value = cal;
+            document.getElementById('customFoodProtein').value = protein;
+            document.getElementById('customFoodCarbs').value = carbs;
+            document.getElementById('customFoodFats').value = fats;
+            document.getElementById('customFoodServingName').value = '100g';
+            document.getElementById('customFoodServingGrams').value = 100;
+
+            // Move to step 2
+            document.getElementById('customFoodStep1').style.display = 'none';
+            document.getElementById('customFoodStep2').style.display = 'block';
+
+            showNotification(`✓ Nutrition data fetched from USDA database`);
         }
 
         function proceedWithCustomFood() {
