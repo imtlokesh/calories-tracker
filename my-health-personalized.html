@@ -1857,9 +1857,21 @@
             else calories = Math.round(tdee);
 
             let protein;
-            if (profile.goal === 'muscle') protein = Math.round(profile.weight * 1.6);
-            else if (profile.goal === 'loss') protein = Math.round(profile.weight * 1.2);
-            else protein = Math.round(profile.weight * 0.8);
+            if (profile.goal === 'muscle') {
+                protein = Math.round(profile.weight * 1.8);
+            } else if (profile.goal === 'loss') {
+                protein = Math.round(profile.weight * 1.4);
+            } else {
+                // Maintenance - adjust protein based on activity level
+                const activityProteinMultipliers = {
+                    'sedentary': 0.8,
+                    'light': 1.0,
+                    'moderate': 1.3,
+                    'active': 1.5,
+                    'very_active': 1.7
+                };
+                protein = Math.round(profile.weight * activityProteinMultipliers[profile.activity]);
+            }
 
             nutritionTargets = { calories, protein };
         }
