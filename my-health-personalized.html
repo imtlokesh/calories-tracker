@@ -1402,13 +1402,27 @@
             'idli': { cal: 50, protein: 1.5, carbs: 9, fats: 0.5, portionType: 'unit', portionValue: '1 idli (35g)', portionGrams: 35 },
 
             // Indian Rice & Grains
-            'basmati rice (cooked)': { cal: 130, protein: 2.7, carbs: 28, fats: 0.3, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
+            'basmati rice (cooked)': {
+                servingSizes: [
+                    { name: '1 cup (150g)', grams: 150, cal: 195, protein: 4.05, carbs: 42, fats: 0.45 },
+                    { name: '1 small bowl (100g)', grams: 100, cal: 130, protein: 2.7, carbs: 28, fats: 0.3 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 260, protein: 5.4, carbs: 56, fats: 0.6 },
+                    { name: '½ cup (75g)', grams: 75, cal: 97, protein: 2, carbs: 21, fats: 0.22 }
+                ]
+            },
             'jasmine rice (cooked)': { cal: 130, protein: 2.7, carbs: 28, fats: 0.3, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'millet (bajra)': { cal: 356, protein: 11, carbs: 67, fats: 5, portionType: 'weight', portionValue: '100g dry', portionGrams: 100 },
             'ragi (finger millet)': { cal: 328, protein: 6.7, carbs: 72, fats: 1.3, portionType: 'weight', portionValue: '100g dry', portionGrams: 100 },
 
             // Indian Legumes/Dal
-            'dal (red lentils cooked)': { cal: 116, protein: 9.2, carbs: 20, fats: 0.4, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
+            'dal (red lentils cooked)': {
+                servingSizes: [
+                    { name: '1 small bowl (150g)', grams: 150, cal: 174, protein: 13.8, carbs: 30, fats: 0.6 },
+                    { name: '1 large bowl (200g)', grams: 200, cal: 232, protein: 18.4, carbs: 40, fats: 0.8 },
+                    { name: '100 grams', grams: 100, cal: 116, protein: 9.2, carbs: 20, fats: 0.4 },
+                    { name: '½ bowl (75g)', grams: 75, cal: 87, protein: 6.9, carbs: 15, fats: 0.3 }
+                ]
+            },
             'chana dal (split chickpeas cooked)': { cal: 134, protein: 8.9, carbs: 23, fats: 2.1, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'moong dal (mung bean) cooked': { cal: 95, protein: 7, carbs: 17, fats: 0.4, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'kala chana (black chickpeas)': { cal: 134, protein: 15, carbs: 24, fats: 2, portionType: 'weight', portionValue: '100g cooked', portionGrams: 100 },
@@ -1428,17 +1442,52 @@
 
             // Indian Dairy Products
             'paneer': { cal: 265, protein: 25, carbs: 3, fats: 17, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'milk (whole)': { cal: 149, protein: 8, carbs: 12, fats: 8, portionType: 'volume', portionValue: '1 cup (240ml)', portionGrams: 240 },
+            'milk (whole)': {
+                servingSizes: [
+                    { name: '1 cup (240ml)', grams: 240, cal: 149, protein: 8, carbs: 12, fats: 8 },
+                    { name: '100ml', grams: 100, cal: 62, protein: 3.3, carbs: 5, fats: 3.3 },
+                    { name: '1 glass (200ml)', grams: 200, cal: 124, protein: 6.6, carbs: 10, fats: 6.6 },
+                    { name: '½ cup (120ml)', grams: 120, cal: 74, protein: 4, carbs: 6, fats: 4 }
+                ]
+            },
             'curd/yogurt (plain)': { cal: 100, protein: 3.5, carbs: 7, fats: 0.4, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'ghee': { cal: 892, protein: 0, carbs: 0, fats: 99, portionType: 'weight', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'butter': { cal: 717, protein: 0.9, carbs: 0.1, fats: 81, portionType: 'weight', portionValue: '1 tbsp (14g)', portionGrams: 14 },
+            'ghee': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 124, protein: 0, carbs: 0, fats: 14 },
+                    { name: '1 teaspoon', grams: 5, cal: 45, protein: 0, carbs: 0, fats: 5 },
+                    { name: '2 tablespoons', grams: 28, cal: 248, protein: 0, carbs: 0, fats: 28 },
+                    { name: '100 grams', grams: 100, cal: 892, protein: 0, carbs: 0, fats: 99 }
+                ]
+            },
+            'butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 100, protein: 0.1, carbs: 0, fats: 11.4 },
+                    { name: '1 teaspoon', grams: 5, cal: 36, protein: 0, carbs: 0, fats: 4 },
+                    { name: '2 tablespoons', grams: 28, cal: 200, protein: 0.3, carbs: 0, fats: 23 },
+                    { name: '100 grams', grams: 100, cal: 717, protein: 0.9, carbs: 0.1, fats: 81 }
+                ]
+            },
 
             // Indian Nuts & Seeds
             'peanuts (roasted)': { cal: 567, protein: 26, carbs: 16, fats: 49, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'sesame seeds': { cal: 573, protein: 18, carbs: 30, fats: 50, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'coconut (fresh)': { cal: 354, protein: 3.3, carbs: 15, fats: 33, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'coconut oil': { cal: 892, protein: 0, carbs: 0, fats: 99, portionType: 'weight', portionValue: '1 tbsp (14g)', portionGrams: 14 },
-            'mustard oil': { cal: 884, protein: 0, carbs: 0, fats: 100, portionType: 'weight', portionValue: '1 tbsp (14g)', portionGrams: 14 },
+            'coconut oil': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 124, protein: 0, carbs: 0, fats: 14 },
+                    { name: '1 teaspoon', grams: 5, cal: 45, protein: 0, carbs: 0, fats: 5 },
+                    { name: '2 tablespoons', grams: 28, cal: 248, protein: 0, carbs: 0, fats: 28 },
+                    { name: '100 grams', grams: 100, cal: 892, protein: 0, carbs: 0, fats: 99 }
+                ]
+            },
+            'mustard oil': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 14, cal: 123, protein: 0, carbs: 0, fats: 14 },
+                    { name: '1 teaspoon', grams: 5, cal: 44, protein: 0, carbs: 0, fats: 5 },
+                    { name: '2 tablespoons', grams: 28, cal: 247, protein: 0, carbs: 0, fats: 28 },
+                    { name: '100 grams', grams: 100, cal: 884, protein: 0, carbs: 0, fats: 100 }
+                ]
+            },
 
             // Other Indian Foods
             'eggs': { cal: 78, protein: 6, carbs: 0.6, fats: 5.3, portionType: 'unit', portionValue: '1 large egg', portionGrams: 50 },
@@ -1499,7 +1548,14 @@
             'french fries': { cal: 365, protein: 3.4, carbs: 48, fats: 17, portionType: 'weight', portionValue: '100g fried', portionGrams: 100 },
             'potato chips': { cal: 536, protein: 5.7, carbs: 50, fats: 35, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
             'popcorn (air popped)': { cal: 387, protein: 12, carbs: 78, fats: 4.5, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
-            'peanut butter': { cal: 94, protein: 4, carbs: 3, fats: 8, portionType: 'unit', portionValue: '1 tbsp' },
+            'peanut butter': {
+                servingSizes: [
+                    { name: '1 tablespoon', grams: 16, cal: 94, protein: 4, carbs: 3, fats: 8 },
+                    { name: '1 teaspoon', grams: 5, cal: 29, protein: 1.2, carbs: 0.9, fats: 2.5 },
+                    { name: '2 tablespoons', grams: 32, cal: 188, protein: 8, carbs: 6, fats: 16 },
+                    { name: '100 grams', grams: 100, cal: 588, protein: 25, carbs: 20, fats: 50 }
+                ]
+            },
             'jelly/jam': { cal: 278, protein: 0.4, carbs: 67, fats: 0.1, portionType: 'weight', portionValue: '100g', portionGrams: 100 },
 
             // ===== ITALIAN FOODS =====
@@ -1997,9 +2053,12 @@
                         const quantity = parseFloat(f.quantity);
                         const quantityStr = Number.isInteger(quantity) ? quantity.toString() : quantity.toFixed(1);
 
-                        // Format portion display
+                        // Format portion display based on whether it's a serving size or standard format
                         let portionDisplay = '';
-                        if (f.portionValue === 'g' || f.portionValue === 'ml') {
+                        if (f.portionType === 'serving' && f.servingSize) {
+                            // For foods with serving sizes (like "1 tablespoon", "1 large bowl")
+                            portionDisplay = quantity === 1 ? f.servingSize : `${quantityStr} × ${f.servingSize}`;
+                        } else if (f.portionValue === 'g' || f.portionValue === 'ml') {
                             portionDisplay = `${quantityStr}${f.portionValue}`;
                         } else {
                             // For unit-based portions like "1 medium apple", handle pluralization
@@ -2139,72 +2198,115 @@
             return [];
         }
 
+        let selectedServingSize = null; // Track selected serving size for foods with servingSizes
+
         function selectFoodForQuantity(foodName) {
             selectedFoodName = foodName;
             selectedFood = foods[foodName];
             selectedMeal = 'breakfast';
             selectedUnit = null;
+            selectedServingSize = null;
 
-            const portionType = selectedFood.portionType;
-            const availableUnits = getAvailableUnits(portionType);
+            let contentHTML = '';
 
-            // Set default unit
-            if (portionType === 'weight') {
-                selectedUnit = 'g';
-            } else if (portionType === 'volume') {
-                selectedUnit = 'ml';
-            } else if (portionType === 'unit') {
-                selectedUnit = availableUnits[0];
-            }
+            // Check if food has multiple serving sizes
+            if (selectedFood.servingSizes && Array.isArray(selectedFood.servingSizes)) {
+                // Food with multiple serving size options
+                selectedServingSize = selectedFood.servingSizes[0]; // Default to first option
 
-            let label = 'Quantity';
-            let placeholder = '1';
-            let unitDropdown = '';
+                const servingSizeOptions = selectedFood.servingSizes.map((size, idx) =>
+                    `<option value="${idx}" data-grams="${size.grams}">${size.name}</option>`
+                ).join('');
 
-            if (portionType === 'unit') {
-                let unitName = selectedFood.portionValue.split('(')[0].trim().replace(/^\d+\s+/, '');
-                label = `How many ${unitName}s?`;
-                placeholder = '1';
-            } else if (portionType === 'weight') {
-                label = 'Weight';
-                placeholder = '100';
-                unitDropdown = `
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
-                        <input type="number" class="quantity-input" id="quantityInput" placeholder="${placeholder}" min="0.1" step="0.1">
-                        <select id="unitSelect" style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 600;" onchange="updateQuantityInfo()">
-                            <option value="g">Grams (g)</option>
-                            <option value="oz">Ounces (oz)</option>
-                            <option value="kg">Kilograms (kg)</option>
-                            <option value="lb">Pounds (lb)</option>
-                        </select>
+                contentHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <div style="background: #f0f0f0; padding: 16px; border-radius: 10px; margin-bottom: 16px;">
+                            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">Select Serving Size:</div>
+                            <select id="servingSizeSelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 12px;" onchange="updateServingSizeInfo()">
+                                ${servingSizeOptions}
+                            </select>
+                            <div style="font-size: 11px; color: #999;">
+                                <strong id="servingCalInfo">${Math.round(selectedServingSize.cal)}</strong> cal |
+                                <strong id="servingProteinInfo">${(selectedServingSize.protein < 1 ? selectedServingSize.protein.toFixed(1) : Math.round(selectedServingSize.protein))}</strong>g protein
+                            </div>
+                        </div>
+
+                        <div class="quantity-input-section">
+                            <div class="quantity-label">How many servings?</div>
+                            <input type="number" class="quantity-input" id="quantityInput" placeholder="1" min="0.1" step="0.1" value="1">
+                            <div class="quantity-info" id="quantityInfo" style="margin-top: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; font-size: 13px;"></div>
+
+                            <div style="margin-bottom: 16px; margin-top: 16px;">
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: #666; margin-bottom: 8px; text-transform: uppercase;">Which meal?</label>
+                                <select id="mealSelect" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px;">
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="snacks">Snacks</option>
+                                </select>
+                            </div>
+
+                            <div class="quantity-buttons">
+                                <button class="btn-quantity btn-cancel" onclick="closeAddFood()">Cancel</button>
+                                <button class="btn-quantity btn-add" onclick="addFoodToLog()">Add Food</button>
+                            </div>
+                        </div>
                     </div>
                 `;
-            } else if (portionType === 'volume') {
-                label = 'Volume';
-                placeholder = '240';
-                unitDropdown = `
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
-                        <input type="number" class="quantity-input" id="quantityInput" placeholder="${placeholder}" min="0.1" step="0.1">
-                        <select id="unitSelect" style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 600;" onchange="updateQuantityInfo()">
-                            <option value="ml">Milliliters (ml)</option>
-                            <option value="cup">Cups</option>
-                            <option value="tbsp">Tablespoons</option>
-                            <option value="tsp">Teaspoons</option>
-                            <option value="fl oz">Fluid Ounces (fl oz)</option>
-                            <option value="liter">Liters (L)</option>
-                        </select>
-                    </div>
-                `;
-            }
+            } else {
+                // Original food format with portionType
+                const portionType = selectedFood.portionType;
+                const availableUnits = getAvailableUnits(portionType);
 
-            const modal = document.getElementById('foodModal');
-            modal.innerHTML = `
-                <div class="modal-content" onclick="event.stopPropagation()">
-                    <div class="modal-header">
-                        <div class="modal-title">${foodName}</div>
-                        <button class="modal-close" onclick="closeAddFood()">×</button>
-                    </div>
+                if (portionType === 'weight') {
+                    selectedUnit = 'g';
+                } else if (portionType === 'volume') {
+                    selectedUnit = 'ml';
+                } else if (portionType === 'unit') {
+                    selectedUnit = availableUnits[0];
+                }
 
+                let label = 'Quantity';
+                let placeholder = '1';
+                let unitDropdown = '';
+
+                if (portionType === 'unit') {
+                    let unitName = selectedFood.portionValue.split('(')[0].trim().replace(/^\d+\s+/, '');
+                    label = `How many ${unitName}s?`;
+                    placeholder = '1';
+                } else if (portionType === 'weight') {
+                    label = 'Weight';
+                    placeholder = '100';
+                    unitDropdown = `
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
+                            <input type="number" class="quantity-input" id="quantityInput" placeholder="${placeholder}" min="0.1" step="0.1">
+                            <select id="unitSelect" style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 600;" onchange="updateQuantityInfo()">
+                                <option value="g">Grams (g)</option>
+                                <option value="oz">Ounces (oz)</option>
+                                <option value="kg">Kilograms (kg)</option>
+                                <option value="lb">Pounds (lb)</option>
+                            </select>
+                        </div>
+                    `;
+                } else if (portionType === 'volume') {
+                    label = 'Volume';
+                    placeholder = '240';
+                    unitDropdown = `
+                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
+                            <input type="number" class="quantity-input" id="quantityInput" placeholder="${placeholder}" min="0.1" step="0.1">
+                            <select id="unitSelect" style="padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 13px; font-weight: 600;" onchange="updateQuantityInfo()">
+                                <option value="ml">Milliliters (ml)</option>
+                                <option value="cup">Cups</option>
+                                <option value="tbsp">Tablespoons</option>
+                                <option value="tsp">Teaspoons</option>
+                                <option value="fl oz">Fluid Ounces (fl oz)</option>
+                                <option value="liter">Liters (L)</option>
+                            </select>
+                        </div>
+                    `;
+                }
+
+                contentHTML = `
                     <div style="margin-bottom: 20px;">
                         <div style="background: #f0f0f0; padding: 16px; border-radius: 10px; margin-bottom: 16px;">
                             <div style="font-size: 12px; color: #666; margin-bottom: 4px;">Standard Portion:</div>
@@ -2236,6 +2338,17 @@
                             </div>
                         </div>
                     </div>
+                `;
+            }
+
+            const modal = document.getElementById('foodModal');
+            modal.innerHTML = `
+                <div class="modal-content" onclick="event.stopPropagation()">
+                    <div class="modal-header">
+                        <div class="modal-title">${foodName}</div>
+                        <button class="modal-close" onclick="closeAddFood()">×</button>
+                    </div>
+                    ${contentHTML}
                 </div>
             `;
 
@@ -2243,6 +2356,21 @@
             if (document.getElementById('unitSelect')) {
                 document.getElementById('unitSelect').value = selectedUnit;
             }
+            if (document.getElementById('servingSizeSelect')) {
+                document.getElementById('servingSizeSelect').onchange = updateServingSizeInfo;
+            }
+            updateQuantityInfo();
+        }
+
+        function updateServingSizeInfo() {
+            const select = document.getElementById('servingSizeSelect');
+            const index = parseInt(select.value);
+            selectedServingSize = selectedFood.servingSizes[index];
+
+            document.getElementById('servingCalInfo').textContent = Math.round(selectedServingSize.cal);
+            document.getElementById('servingProteinInfo').textContent =
+                (selectedServingSize.protein < 1 ? selectedServingSize.protein.toFixed(1) : Math.round(selectedServingSize.protein));
+
             updateQuantityInfo();
         }
 
@@ -2253,39 +2381,41 @@
                 return;
             }
 
-            // Get selected unit for weight/volume foods
-            const unitSelect = document.getElementById('unitSelect');
-            if (unitSelect) {
-                selectedUnit = unitSelect.value;
-            }
+            let cal, protein, carbs, fats;
 
-            // For unit-based foods (eggs, rotis, etc.), quantity is the count
-            // For weight-based and volume-based foods, convert to base unit (grams/ml) first
-            let multiplier;
-            if (selectedFood.portionType === 'unit') {
-                multiplier = quantity; // Direct count (1 egg = 1x, 2 eggs = 2x)
+            // Handle foods with servingSizes (like peanut butter, milk with multiple options)
+            if (selectedFood.servingSizes && selectedServingSize) {
+                cal = selectedServingSize.cal * quantity;
+                protein = selectedServingSize.protein * quantity;
+                carbs = selectedServingSize.carbs * quantity;
+                fats = selectedServingSize.fats * quantity;
             } else {
-                // Convert quantity from selected unit to base unit (grams/ml)
-                let quantityInBaseUnit = quantity;
-                if (selectedFood.portionType === 'weight' && selectedUnit !== 'g') {
-                    quantityInBaseUnit = quantity * unitConversions.weight[selectedUnit];
-                } else if (selectedFood.portionType === 'volume' && selectedUnit !== 'ml') {
-                    quantityInBaseUnit = quantity * unitConversions.volume[selectedUnit];
+                // Handle original format foods
+                const unitSelect = document.getElementById('unitSelect');
+                if (unitSelect) {
+                    selectedUnit = unitSelect.value;
                 }
-                multiplier = quantityInBaseUnit / selectedFood.portionGrams; // Scale by weight/volume
-            }
 
-            const cal = selectedFood.cal * multiplier;
-            const protein = selectedFood.protein * multiplier;
-            const carbs = selectedFood.carbs * multiplier;
-            const fats = selectedFood.fats * multiplier;
+                // For unit-based foods (eggs, rotis, etc.), quantity is the count
+                // For weight-based and volume-based foods, convert to base unit (grams/ml) first
+                let multiplier;
+                if (selectedFood.portionType === 'unit') {
+                    multiplier = quantity; // Direct count (1 egg = 1x, 2 eggs = 2x)
+                } else {
+                    // Convert quantity from selected unit to base unit (grams/ml)
+                    let quantityInBaseUnit = quantity;
+                    if (selectedFood.portionType === 'weight' && selectedUnit !== 'g') {
+                        quantityInBaseUnit = quantity * unitConversions.weight[selectedUnit];
+                    } else if (selectedFood.portionType === 'volume' && selectedUnit !== 'ml') {
+                        quantityInBaseUnit = quantity * unitConversions.volume[selectedUnit];
+                    }
+                    multiplier = quantityInBaseUnit / selectedFood.portionGrams; // Scale by weight/volume
+                }
 
-            // Show conversion info
-            let conversionInfo = '';
-            if (selectedFood.portionType === 'weight' && selectedUnit !== 'g') {
-                conversionInfo = `<div style="font-size: 12px; color: #999; margin-top: 8px;">≈ ${(quantity * unitConversions.weight[selectedUnit]).toFixed(0)}g</div>`;
-            } else if (selectedFood.portionType === 'volume' && selectedUnit !== 'ml') {
-                conversionInfo = `<div style="font-size: 12px; color: #999; margin-top: 8px;">≈ ${(quantity * unitConversions.volume[selectedUnit]).toFixed(0)}ml</div>`;
+                cal = selectedFood.cal * multiplier;
+                protein = selectedFood.protein * multiplier;
+                carbs = selectedFood.carbs * multiplier;
+                fats = selectedFood.fats * multiplier;
             }
 
             document.getElementById('quantityInfo').innerHTML = `
@@ -2295,56 +2425,71 @@
                     <div><strong>${(carbs < 1 ? carbs.toFixed(1) : Math.round(carbs))}g</strong><br><span style="font-size: 11px; color: #666;">carbs</span></div>
                     <div><strong>${(fats < 1 ? fats.toFixed(1) : Math.round(fats))}g</strong><br><span style="font-size: 11px; color: #666;">fats</span></div>
                 </div>
-                ${conversionInfo}
             `;
         }
 
         function addFoodToLog() {
             const quantity = parseFloat(document.getElementById('quantityInput').value);
             const meal = document.getElementById('mealSelect').value;
-            const unitSelect = document.getElementById('unitSelect');
-
-            if (unitSelect) {
-                selectedUnit = unitSelect.value;
-            }
 
             if (!quantity || quantity <= 0) {
                 alert('Please enter a valid quantity');
                 return;
             }
 
-            // For unit-based foods, quantity is the count. For others, convert to base unit first
-            let multiplier;
-            let displayUnit = selectedUnit;
+            const log = getTodayLog();
+            let foodEntry;
 
-            if (selectedFood.portionType === 'unit') {
-                multiplier = quantity; // Direct count (1 egg = 1x, 2 eggs = 2x)
-                displayUnit = selectedFood.portionValue.split('(')[0].trim();
+            // Handle foods with servingSizes
+            if (selectedFood.servingSizes && selectedServingSize) {
+                foodEntry = {
+                    name: selectedFoodName,
+                    quantity: quantity.toFixed(1),
+                    servingSize: selectedServingSize.name, // Store the serving size name
+                    portionValue: selectedServingSize.name,
+                    portionType: 'serving',
+                    cal: selectedServingSize.cal * quantity,
+                    protein: selectedServingSize.protein * quantity,
+                    carbs: selectedServingSize.carbs * quantity,
+                    fats: selectedServingSize.fats * quantity
+                };
             } else {
-                // Convert quantity from selected unit to base unit (grams/ml)
-                let quantityInBaseUnit = quantity;
-                if (selectedFood.portionType === 'weight' && selectedUnit !== 'g') {
-                    quantityInBaseUnit = quantity * unitConversions.weight[selectedUnit];
-                } else if (selectedFood.portionType === 'volume' && selectedUnit !== 'ml') {
-                    quantityInBaseUnit = quantity * unitConversions.volume[selectedUnit];
+                // Handle original format foods
+                const unitSelect = document.getElementById('unitSelect');
+                if (unitSelect) {
+                    selectedUnit = unitSelect.value;
                 }
-                multiplier = quantityInBaseUnit / selectedFood.portionGrams;
+
+                let multiplier;
+                let displayUnit = selectedUnit;
+
+                if (selectedFood.portionType === 'unit') {
+                    multiplier = quantity;
+                    displayUnit = selectedFood.portionValue.split('(')[0].trim();
+                } else {
+                    let quantityInBaseUnit = quantity;
+                    if (selectedFood.portionType === 'weight' && selectedUnit !== 'g') {
+                        quantityInBaseUnit = quantity * unitConversions.weight[selectedUnit];
+                    } else if (selectedFood.portionType === 'volume' && selectedUnit !== 'ml') {
+                        quantityInBaseUnit = quantity * unitConversions.volume[selectedUnit];
+                    }
+                    multiplier = quantityInBaseUnit / selectedFood.portionGrams;
+                }
+
+                foodEntry = {
+                    name: selectedFoodName,
+                    quantity: quantity.toFixed(1),
+                    unit: displayUnit,
+                    portionValue: displayUnit,
+                    portionType: selectedFood.portionType,
+                    cal: selectedFood.cal * multiplier,
+                    protein: selectedFood.protein * multiplier,
+                    carbs: selectedFood.carbs * multiplier,
+                    fats: selectedFood.fats * multiplier
+                };
             }
 
-            const log = getTodayLog();
-
-            log[meal].push({
-                name: selectedFoodName,
-                quantity: quantity.toFixed(1),
-                unit: displayUnit, // Store the unit user selected
-                portionValue: displayUnit,
-                portionType: selectedFood.portionType,
-                cal: selectedFood.cal * multiplier,
-                protein: selectedFood.protein * multiplier,
-                carbs: selectedFood.carbs * multiplier,
-                fats: selectedFood.fats * multiplier
-            });
-
+            log[meal].push(foodEntry);
             closeAddFood();
             updateUI();
             showNotification(`${selectedFoodName} added to ${meal}!`);
