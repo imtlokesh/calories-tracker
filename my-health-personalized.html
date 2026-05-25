@@ -1383,6 +1383,51 @@
         </div>
     </div>
 
+    <!-- Add Custom Food Modal -->
+    <div class="modal" id="customFoodModal">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div class="modal-title">Add Custom Food</div>
+                <button class="modal-close" onclick="closeCustomFoodModal()">×</button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Food Name</label>
+                <input type="text" class="form-input" id="customFoodName" placeholder="e.g., My protein shake">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group">
+                    <label class="form-label">Calories (per serving)</label>
+                    <input type="number" class="form-input" id="customFoodCal" placeholder="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Protein (g)</label>
+                    <input type="number" class="form-input" id="customFoodProtein" placeholder="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Carbs (g)</label>
+                    <input type="number" class="form-input" id="customFoodCarbs" placeholder="0" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fats (g)</label>
+                    <input type="number" class="form-input" id="customFoodFats" placeholder="0" step="0.1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Serving Size Name</label>
+                <input type="text" class="form-input" id="customFoodServingName" placeholder="e.g., cup, bowl, scoop">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Serving Size Weight (grams)</label>
+                <input type="number" class="form-input" id="customFoodServingGrams" placeholder="e.g., 240" step="0.1">
+            </div>
+
+            <button onclick="saveCustomFood()" style="width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px;">Add Food</button>
+        </div>
+    </div>
 
     <!-- Notification -->
     <div class="notification" id="notification"></div>
@@ -2202,6 +2247,7 @@
         };
 
         function checkFirstLoad() {
+            loadCustomFoods();  // Load custom foods from localStorage
             loadActiveProfile();
             updateUI();
         }
@@ -2502,23 +2548,37 @@
 
             if (!query) { results.innerHTML = ''; return; }
 
-            const matches = Object.keys(foods).filter(f => f.toLowerCase().includes(query));
-            results.innerHTML = !matches.length ? '<div class="empty-state">No foods found</div>'
-                : matches.map(f => {
-                    const food = foods[f];
-                    // Handle foods with servingSizes array
-                    const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
-                    const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
-                    return `
-                        <div class="search-item" onclick="selectFoodForQuantity('${f}')">
-                            <div>
-                                <div class="search-food-name">${f}</div>
-                                <div class="search-portion">${portionDisplay}</div>
-                            </div>
-                            <div class="search-cal">${calDisplay}</div>
+            // Search both built-in and custom foods
+            const allFoods = { ...foods, ...customFoods };
+            const matches = Object.keys(allFoods).filter(f => f.toLowerCase().includes(query));
+
+            if (!matches.length) {
+                results.innerHTML = `
+                    <div class="empty-state" style="padding: 20px; text-align: center;">
+                        <div style="margin-bottom: 15px;">No foods found for "${query}"</div>
+                        <button onclick="openCustomFoodModal()" style="padding: 12px 24px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                            + Add Custom Food
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            results.innerHTML = matches.map(f => {
+                const food = allFoods[f];
+                const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
+                const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
+                const badge = food.isCustom ? '<span style="font-size: 11px; background: #4CAF50; color: white; padding: 2px 8px; border-radius: 4px; margin-left: 8px;">Custom</span>' : '';
+                return `
+                    <div class="search-item" onclick="selectFoodForQuantity('${f}')">
+                        <div>
+                            <div class="search-food-name">${f}${badge}</div>
+                            <div class="search-portion">${portionDisplay}</div>
                         </div>
-                    `;
-                }).join('');
+                        <div class="search-cal">${calDisplay}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Unit conversion system
@@ -2558,7 +2618,8 @@
 
         function selectFoodForQuantity(foodName) {
             selectedFoodName = foodName;
-            selectedFood = foods[foodName];
+            // Check both built-in and custom foods
+            selectedFood = foods[foodName] || customFoods[foodName];
             selectedMeal = 'breakfast';
             selectedUnit = null;
             selectedServingSize = null;
@@ -2910,6 +2971,82 @@
             currentEditState = { originalMeal: null, originalIndex: null, foodData: null };
         }
 
+        // ===== CUSTOM FOOD MANAGEMENT =====
+        let customFoods = {};
+
+        function loadCustomFoods() {
+            try {
+                const saved = localStorage.getItem('customFoods');
+                customFoods = saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                customFoods = {};
+            }
+        }
+
+        function saveCustomFoodsToStorage() {
+            try {
+                localStorage.setItem('customFoods', JSON.stringify(customFoods));
+            } catch (e) {
+                console.error('Failed to save custom foods:', e);
+            }
+        }
+
+        function openCustomFoodModal() {
+            const modal = document.getElementById('customFoodModal');
+            // Clear form
+            document.getElementById('customFoodName').value = '';
+            document.getElementById('customFoodCal').value = '';
+            document.getElementById('customFoodProtein').value = '';
+            document.getElementById('customFoodCarbs').value = '';
+            document.getElementById('customFoodFats').value = '';
+            document.getElementById('customFoodServingName').value = '';
+            document.getElementById('customFoodServingGrams').value = '';
+
+            modal.classList.add('active');
+            preventBodyScroll();
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeCustomFoodModal();
+                }
+            };
+        }
+
+        function closeCustomFoodModal() {
+            const modal = document.getElementById('customFoodModal');
+            modal.classList.remove('active');
+            restoreBodyScroll();
+        }
+
+        function saveCustomFood() {
+            const name = document.getElementById('customFoodName').value.trim().toLowerCase();
+            const cal = parseFloat(document.getElementById('customFoodCal').value);
+            const protein = parseFloat(document.getElementById('customFoodProtein').value);
+            const carbs = parseFloat(document.getElementById('customFoodCarbs').value);
+            const fats = parseFloat(document.getElementById('customFoodFats').value);
+            const servingName = document.getElementById('customFoodServingName').value.trim();
+            const servingGrams = parseFloat(document.getElementById('customFoodServingGrams').value);
+
+            if (!name || isNaN(cal) || isNaN(servingGrams) || !servingName) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Create custom food object
+            customFoods[name] = {
+                servingSizes: [
+                    { name: servingName, grams: servingGrams, cal, protein: protein || 0, carbs: carbs || 0, fats: fats || 0 }
+                ],
+                isCustom: true
+            };
+
+            saveCustomFoodsToStorage();
+            closeCustomFoodModal();
+            showNotification(`"${name}" added successfully!`);
+
+            // Re-search to show the new food
+            searchFoods();
+        }
+
         function saveEditedFood() {
             const newMeal = document.getElementById('editMealType').value;
             const newQuantity = parseFloat(document.getElementById('editQuantity').value);
@@ -3177,21 +3314,35 @@
 
             if (!query) { results.innerHTML = ''; return; }
 
-            const matches = Object.keys(foods).filter(f => f.toLowerCase().includes(query));
-            results.innerHTML = !matches.length ? '<div class="empty-state">No foods found</div>'
-                : matches.map(f => {
-                    const food = foods[f];
-                    // Handle foods with servingSizes array
-                    const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
-                    const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
-                    return `
-                        <div class="search-item" onclick="selectFoodFromPhoto('${f}')">
-                            <div>
-                                <div class="search-food-name">${f}</div>
-                                <div class="search-portion">${portionDisplay}</div>
-                            </div>
-                            <div class="search-cal">${calDisplay}</div>
+            // Search both built-in and custom foods
+            const allFoods = { ...foods, ...customFoods };
+            const matches = Object.keys(allFoods).filter(f => f.toLowerCase().includes(query));
+
+            if (!matches.length) {
+                results.innerHTML = `
+                    <div class="empty-state" style="padding: 20px; text-align: center;">
+                        <div style="margin-bottom: 15px;">No foods found for "${query}"</div>
+                        <button onclick="openCustomFoodModal()" style="padding: 12px 24px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%;">
+                            + Add Custom Food
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            results.innerHTML = matches.map(f => {
+                const food = allFoods[f];
+                const portionDisplay = food.servingSizes ? food.servingSizes[0].name : food.portionValue;
+                const calDisplay = food.servingSizes ? Math.round(food.servingSizes[0].cal) : Math.round(food.cal);
+                const badge = food.isCustom ? '<span style="font-size: 11px; background: #4CAF50; color: white; padding: 2px 8px; border-radius: 4px; margin-left: 8px;">Custom</span>' : '';
+                return `
+                    <div class="search-item" onclick="selectFoodFromPhoto('${f}')">
+                        <div>
+                            <div class="search-food-name">${f}${badge}</div>
+                            <div class="search-portion">${portionDisplay}</div>
                         </div>
+                        <div class="search-cal">${calDisplay}</div>
+                    </div>
                     `;
                 }).join('');
         }
