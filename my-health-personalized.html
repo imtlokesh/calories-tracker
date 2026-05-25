@@ -1326,8 +1326,35 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">Height (cm)</label>
-                <input type="number" class="form-input" id="profileHeight" placeholder="e.g., 175" min="100" max="250">
+                <label class="form-label">Height</label>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <select class="form-select" id="profileHeightFeet">
+                            <option value="">Feet</option>
+                            <option value="4">4'</option>
+                            <option value="5">5'</option>
+                            <option value="6">6'</option>
+                            <option value="7">7'</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <select class="form-select" id="profileHeightInches">
+                            <option value="">Inches</option>
+                            <option value="0">0"</option>
+                            <option value="1">1"</option>
+                            <option value="2">2"</option>
+                            <option value="3">3"</option>
+                            <option value="4">4"</option>
+                            <option value="5">5"</option>
+                            <option value="6">6"</option>
+                            <option value="7">7"</option>
+                            <option value="8">8"</option>
+                            <option value="9">9"</option>
+                            <option value="10">10"</option>
+                            <option value="11">11"</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -1708,10 +1735,16 @@
             const modal = document.getElementById('createProfileModal');
             const profile = currentProfile;
 
+            // Convert cm to feet and inches
+            const totalInches = Math.round(profile.height / 2.54);
+            const feet = Math.floor(totalInches / 12);
+            const inches = totalInches % 12;
+
             // Populate form with current profile data
             document.getElementById('profileAge').value = profile.age;
             document.getElementById('profileWeight').value = profile.weight;
-            document.getElementById('profileHeight').value = profile.height;
+            document.getElementById('profileHeightFeet').value = feet;
+            document.getElementById('profileHeightInches').value = inches;
             document.getElementById('profileGender').value = profile.gender;
             document.getElementById('profileActivity').value = profile.activity;
             document.getElementById('profileGoal').value = profile.goal;
@@ -1735,16 +1768,26 @@
         function saveProfileDetails() {
             const age = parseFloat(document.getElementById('profileAge').value);
             const weight = parseFloat(document.getElementById('profileWeight').value);
-            const height = parseFloat(document.getElementById('profileHeight').value);
+            const feet = parseFloat(document.getElementById('profileHeightFeet').value);
+            const inches = parseFloat(document.getElementById('profileHeightInches').value);
             const gender = document.getElementById('profileGender').value;
             const activity = document.getElementById('profileActivity').value;
             const goal = document.getElementById('profileGoal').value;
 
             // Validation
-            if (!age || !weight || !height || age < 18 || weight < 30 || height < 100) {
+            if (!age || !weight || !feet || feet === '' || inches === '') {
                 showNotification('Please enter valid details', 'error');
                 return;
             }
+
+            if (age < 18 || weight < 30 || feet < 4 || feet > 7) {
+                showNotification('Please enter valid details', 'error');
+                return;
+            }
+
+            // Convert feet and inches to centimeters
+            const totalInches = (feet * 12) + inches;
+            const height = Math.round(totalInches * 2.54);
 
             // Update current profile with new details
             currentProfile.age = age;
