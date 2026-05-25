@@ -1296,6 +1296,11 @@
             </div>
 
             <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" id="profileName" placeholder="e.g., Lokesh">
+            </div>
+
+            <div class="form-group">
                 <label class="form-label">Age (years)</label>
                 <input type="number" class="form-input" id="profileAge" placeholder="e.g., 30" min="18" max="100">
             </div>
@@ -1710,6 +1715,7 @@
             const inches = totalInches % 12;
 
             // Populate form with current profile data
+            document.getElementById('profileName').value = profile.name;
             document.getElementById('profileAge').value = profile.age;
             document.getElementById('profileWeight').value = profile.weight;
             document.getElementById('profileHeightFeet').value = feet;
@@ -1735,6 +1741,7 @@
         }
 
         function saveProfileDetails() {
+            const name = document.getElementById('profileName').value.trim();
             const age = parseFloat(document.getElementById('profileAge').value);
             const weight = parseFloat(document.getElementById('profileWeight').value);
             const feet = parseFloat(document.getElementById('profileHeightFeet').value);
@@ -1744,7 +1751,7 @@
             const goal = document.getElementById('profileGoal').value;
 
             // Validation
-            if (!age || !weight || !feet || feet === '' || inches === '') {
+            if (!name || !age || !weight || !feet || feet === '' || inches === '') {
                 showNotification('Please enter valid details', 'error');
                 return;
             }
@@ -1759,6 +1766,7 @@
             const height = Math.round(totalInches * 2.54);
 
             // Update current profile with new details
+            currentProfile.name = name;
             currentProfile.age = age;
             currentProfile.weight = weight;
             currentProfile.height = height;
@@ -1773,6 +1781,7 @@
             saveAppData();
             closeCreateProfile();
             updateUI();
+            document.getElementById('headerUser').textContent = currentProfile.name;
 
             showNotification('Profile updated successfully!', 'success');
 
