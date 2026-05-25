@@ -1220,8 +1220,10 @@
                         <div class="header-user" id="headerUser">Lokesh</div>
                     </div>
                 </div>
-                <button class="profile-switcher" onclick="openCreateProfile()">Update Profile</button>
-                <button class="profile-switcher" onclick="switchTab('history')">📈 Trends</button>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="profile-switcher" onclick="openCreateProfile()">Update Profile</button>
+                    <button class="profile-switcher" onclick="switchTab('history')">📈 Trends</button>
+                </div>
             </div>
             <div class="header-date" id="todayDate">Today</div>
 
