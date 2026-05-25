@@ -672,23 +672,6 @@
             box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
         }
 
-        .btn-settings-bar {
-            background: var(--neutral-100);
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .btn-settings-bar:hover {
-            background: var(--neutral-200);
-        }
 
         .search-box {
             width: 100%;
@@ -1222,7 +1205,7 @@
                         <div class="header-user" id="headerUser">Lokesh</div>
                     </div>
                 </div>
-                <button class="profile-switcher" onclick="openCreateProfile()">Create Profile</button>
+                <button class="profile-switcher" onclick="openCreateProfile()">Update Profile</button>
             </div>
             <div class="header-date" id="todayDate">Today</div>
 
@@ -1268,9 +1251,6 @@
                     <button class="quick-btn" onclick="switchTab('history')">
                         <span class="quick-btn-icon">📈</span> <span>Trends</span>
                     </button>
-                    <button class="quick-btn" onclick="openSettings()">
-                        <span class="quick-btn-icon">⚙️</span> <span>Settings</span>
-                    </button>
                 </div>
 
                 <div id="mealSections"></div>
@@ -1307,11 +1287,11 @@
         </div>
     </div>
 
-    <!-- Create Profile Modal -->
+    <!-- Update Profile Modal -->
     <div class="modal" id="createProfileModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Create Profile</div>
+                <div class="modal-title">Update Profile</div>
                 <button class="modal-close" onclick="closeCreateProfile()">×</button>
             </div>
 
@@ -1435,17 +1415,6 @@
         </div>
     </div>
 
-    <!-- Settings/Profile Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Your Profile</div>
-                <button class="modal-close" onclick="closeSettings()">×</button>
-            </div>
-
-            <div id="profileDisplay"></div>
-        </div>
-    </div>
 
     <!-- Notification -->
     <div class="notification" id="notification"></div>
@@ -2252,90 +2221,6 @@
         }
         // ===== END EDIT FOOD FUNCTIONS =====
 
-        function openSettings() {
-            const profile = currentProfile;
-            const html = `
-                <form onsubmit="saveSettings(event)">
-                    <div class="form-group">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-input" id="settingsName" value="${profile.name}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Age</label>
-                        <input type="number" class="form-input" id="settingsAge" value="${profile.age}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Weight (kg)</label>
-                        <input type="number" class="form-input" id="settingsWeight" value="${profile.weight}" step="0.1">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Height (cm)</label>
-                        <input type="number" class="form-input" id="settingsHeight" value="${profile.height}">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Gender</label>
-                        <select class="form-select" id="settingsGender">
-                            <option value="male" ${profile.gender === 'male' ? 'selected' : ''}>Male</option>
-                            <option value="female" ${profile.gender === 'female' ? 'selected' : ''}>Female</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Activity Level</label>
-                        <select class="form-select" id="settingsActivity">
-                            <option value="sedentary" ${profile.activity === 'sedentary' ? 'selected' : ''}>Sedentary (little exercise)</option>
-                            <option value="light" ${profile.activity === 'light' ? 'selected' : ''}>Light (1-3 days/week)</option>
-                            <option value="moderate" ${profile.activity === 'moderate' ? 'selected' : ''}>Moderate (3-5 days/week)</option>
-                            <option value="active" ${profile.activity === 'active' ? 'selected' : ''}>Active (6-7 days/week)</option>
-                            <option value="very_active" ${profile.activity === 'very_active' ? 'selected' : ''}>Very Active (daily + intense)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Goal</label>
-                        <select class="form-select" id="settingsGoal">
-                            <option value="loss" ${profile.goal === 'loss' ? 'selected' : ''}>Weight Loss</option>
-                            <option value="maintenance" ${profile.goal === 'maintenance' ? 'selected' : ''}>Maintenance</option>
-                            <option value="gain" ${profile.goal === 'gain' ? 'selected' : ''}>Weight Gain</option>
-                            <option value="muscle" ${profile.goal === 'muscle' ? 'selected' : ''}>Muscle Building</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-primary">Save Profile</button>
-                </form>
-            `;
-
-            document.getElementById('profileDisplay').innerHTML = html;
-            const modal = document.getElementById('settingsModal');
-            modal.classList.add('active');
-            preventBodyScroll();
-
-            // Close modal when clicking outside (on the backdrop)
-            modal.onclick = function(e) {
-                if (e.target === modal) {
-                    closeSettings();
-                }
-            };
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').classList.remove('active');
-            restoreBodyScroll();
-        }
-
-        function saveSettings(e) {
-            e.preventDefault();
-            currentProfile.name = document.getElementById('settingsName').value;
-            currentProfile.age = parseInt(document.getElementById('settingsAge').value);
-            currentProfile.weight = parseFloat(document.getElementById('settingsWeight').value);
-            currentProfile.height = parseInt(document.getElementById('settingsHeight').value);
-            currentProfile.gender = document.getElementById('settingsGender').value;
-            currentProfile.activity = document.getElementById('settingsActivity').value;
-            currentProfile.goal = document.getElementById('settingsGoal').value;
-
-            calculateNutritionTargets();
-            document.getElementById('headerUser').textContent = currentProfile.name;
-            closeSettings();
-            updateUI();
-            showNotification('Profile saved!');
-        }
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
