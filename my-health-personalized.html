@@ -1391,41 +1391,53 @@
                 <button class="modal-close" onclick="closeCustomFoodModal()">×</button>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Food Name</label>
-                <input type="text" class="form-input" id="customFoodName" placeholder="e.g., My protein shake">
+            <div id="customFoodStep1">
+                <div class="form-group">
+                    <label class="form-label">Food Name</label>
+                    <input type="text" class="form-input" id="customFoodName" placeholder="e.g., red lobia, my smoothie..." onkeyup="searchSimilarFoods()">
+                </div>
+                <div id="similarFoodsContainer" style="margin-top: 15px;"></div>
+                <button onclick="proceedWithCustomFood()" style="width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px;">Continue</button>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div id="customFoodStep2" style="display: none;">
                 <div class="form-group">
-                    <label class="form-label">Calories (per serving)</label>
-                    <input type="number" class="form-input" id="customFoodCal" placeholder="0" step="0.1">
+                    <label class="form-label">Food Name</label>
+                    <input type="text" class="form-input" id="customFoodNameDisplay" disabled>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Protein (g)</label>
-                    <input type="number" class="form-input" id="customFoodProtein" placeholder="0" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Carbs (g)</label>
-                    <input type="number" class="form-input" id="customFoodCarbs" placeholder="0" step="0.1">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Fats (g)</label>
-                    <input type="number" class="form-input" id="customFoodFats" placeholder="0" step="0.1">
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label class="form-label">Serving Size Name</label>
-                <input type="text" class="form-input" id="customFoodServingName" placeholder="e.g., cup, bowl, scoop">
-            </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label class="form-label">Calories (per serving)</label>
+                        <input type="number" class="form-input" id="customFoodCal" placeholder="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Protein (g)</label>
+                        <input type="number" class="form-input" id="customFoodProtein" placeholder="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Carbs (g)</label>
+                        <input type="number" class="form-input" id="customFoodCarbs" placeholder="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Fats (g)</label>
+                        <input type="number" class="form-input" id="customFoodFats" placeholder="0" step="0.1">
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label class="form-label">Serving Size Weight (grams)</label>
-                <input type="number" class="form-input" id="customFoodServingGrams" placeholder="e.g., 240" step="0.1">
-            </div>
+                <div class="form-group">
+                    <label class="form-label">Serving Size Name</label>
+                    <input type="text" class="form-input" id="customFoodServingName" placeholder="e.g., cup, bowl, scoop">
+                </div>
 
-            <button onclick="saveCustomFood()" style="width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px;">Add Food</button>
+                <div class="form-group">
+                    <label class="form-label">Serving Size Weight (grams)</label>
+                    <input type="number" class="form-input" id="customFoodServingGrams" placeholder="e.g., 240" step="0.1">
+                </div>
+
+                <button onclick="saveCustomFood()" style="width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px;">Add Food</button>
+                <button onclick="goBackCustomFood()" style="width: 100%; padding: 12px; background: #f0f0f0; color: #333; border: none; border-radius: 12px; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 10px;">Back</button>
+            </div>
         </div>
     </div>
 
@@ -3001,6 +3013,11 @@
             document.getElementById('customFoodFats').value = '';
             document.getElementById('customFoodServingName').value = '';
             document.getElementById('customFoodServingGrams').value = '';
+            document.getElementById('similarFoodsContainer').innerHTML = '';
+
+            // Reset to step 1
+            document.getElementById('customFoodStep1').style.display = 'block';
+            document.getElementById('customFoodStep2').style.display = 'none';
 
             modal.classList.add('active');
             preventBodyScroll();
@@ -3009,16 +3026,108 @@
                     closeCustomFoodModal();
                 }
             };
+
+            // Focus on food name input
+            setTimeout(() => document.getElementById('customFoodName').focus(), 100);
         }
 
         function closeCustomFoodModal() {
             const modal = document.getElementById('customFoodModal');
             modal.classList.remove('active');
             restoreBodyScroll();
+            // Reset to step 1
+            document.getElementById('customFoodStep1').style.display = 'block';
+            document.getElementById('customFoodStep2').style.display = 'none';
+            document.getElementById('similarFoodsContainer').innerHTML = '';
+        }
+
+        function searchSimilarFoods() {
+            const query = document.getElementById('customFoodName').value.toLowerCase().trim();
+            const container = document.getElementById('similarFoodsContainer');
+
+            if (!query || query.length < 2) {
+                container.innerHTML = '';
+                return;
+            }
+
+            // Search in both built-in and custom foods
+            const allFoods = { ...foods, ...customFoods };
+            const matches = Object.keys(allFoods)
+                .filter(f => f.toLowerCase().includes(query))
+                .slice(0, 5);  // Show top 5 matches
+
+            if (matches.length === 0) {
+                container.innerHTML = '<div style="color: #666; font-size: 13px; padding: 10px; text-align: center;">No similar foods found</div>';
+                return;
+            }
+
+            container.innerHTML = '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">Similar foods found:</div>' +
+                matches.map(f => {
+                    const food = allFoods[f];
+                    const servingSize = food.servingSizes ? food.servingSizes[0] : null;
+                    const cal = servingSize ? servingSize.cal : food.cal;
+                    const protein = servingSize ? servingSize.protein : food.protein;
+                    const carbs = servingSize ? servingSize.carbs : food.carbs;
+                    const fats = servingSize ? servingSize.fats : food.fats;
+                    const servingGrams = servingSize ? servingSize.grams : food.portionGrams;
+                    const servingName = servingSize ? servingSize.name : food.portionValue;
+
+                    return `
+                        <div onclick="selectSimilarFood('${f}', ${cal}, ${protein}, ${carbs}, ${fats}, '${servingName}', ${servingGrams})"
+                             style="padding: 10px; margin: 5px 0; background: #f5f5f5; border-radius: 6px; cursor: pointer; border-left: 3px solid var(--primary);">
+                            <div style="font-weight: 600; color: #333;">${f}</div>
+                            <div style="font-size: 12px; color: #666;">${Math.round(cal)} cal | ${servingName}</div>
+                        </div>
+                    `;
+                }).join('');
+        }
+
+        function selectSimilarFood(foodName, cal, protein, carbs, fats, servingName, servingGrams) {
+            // Auto-fill the nutrition details from similar food
+            document.getElementById('customFoodName').value = document.getElementById('customFoodName').value.trim();
+            document.getElementById('customFoodNameDisplay').value = document.getElementById('customFoodName').value;
+            document.getElementById('customFoodCal').value = cal;
+            document.getElementById('customFoodProtein').value = protein;
+            document.getElementById('customFoodCarbs').value = carbs;
+            document.getElementById('customFoodFats').value = fats;
+            document.getElementById('customFoodServingName').value = servingName;
+            document.getElementById('customFoodServingGrams').value = servingGrams;
+
+            // Move to step 2
+            document.getElementById('customFoodStep1').style.display = 'none';
+            document.getElementById('customFoodStep2').style.display = 'block';
+
+            showNotification(`Nutrition details auto-filled from ${foodName}`);
+        }
+
+        function proceedWithCustomFood() {
+            const name = document.getElementById('customFoodName').value.trim();
+            if (!name || name.length < 2) {
+                alert('Please enter a food name');
+                return;
+            }
+
+            document.getElementById('customFoodNameDisplay').value = name;
+            document.getElementById('customFoodStep1').style.display = 'none';
+            document.getElementById('customFoodStep2').style.display = 'block';
+
+            // Clear nutrition fields for manual entry
+            document.getElementById('customFoodCal').value = '';
+            document.getElementById('customFoodProtein').value = '';
+            document.getElementById('customFoodCarbs').value = '';
+            document.getElementById('customFoodFats').value = '';
+            document.getElementById('customFoodServingName').value = '';
+            document.getElementById('customFoodServingGrams').value = '';
+        }
+
+        function goBackCustomFood() {
+            document.getElementById('customFoodStep1').style.display = 'block';
+            document.getElementById('customFoodStep2').style.display = 'none';
+            document.getElementById('similarFoodsContainer').innerHTML = '';
         }
 
         function saveCustomFood() {
-            const name = document.getElementById('customFoodName').value.trim().toLowerCase();
+            const name = document.getElementById('customFoodNameDisplay').value.trim().toLowerCase();
             const cal = parseFloat(document.getElementById('customFoodCal').value);
             const protein = parseFloat(document.getElementById('customFoodProtein').value);
             const carbs = parseFloat(document.getElementById('customFoodCarbs').value);
