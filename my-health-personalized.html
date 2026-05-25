@@ -3041,29 +3041,29 @@
             document.getElementById('similarFoodsContainer').innerHTML = '';
         }
 
-        // Nutrition API integration - using multiple sources with fallback
+        // Multi-source Nutrition API integration (Global + Indian foods)
         async function searchUSDAFood(query) {
             try {
                 console.log('Searching nutrition data for:', query);
+                let results = [];
 
-                // Try Open Food Facts API first (CORS-friendly)
-                const offUrl = `https://world.openfoodfacts.org/api/v3/foods?query=${encodeURIComponent(query)}&limit=10`;
-                console.log('Trying Open Food Facts API...');
-
+                // API 1: Open Food Facts (CORS-friendly, global coverage)
+                console.log('1️⃣ Trying Open Food Facts API...');
                 try {
+                    const offUrl = `https://world.openfoodfacts.org/api/v3/foods?query=${encodeURIComponent(query)}&limit=5`;
                     const offResponse = await fetch(offUrl, {
                         method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                        timeout: 5000
+                        headers: { 'Accept': 'application/json' }
                     });
 
                     if (offResponse.ok) {
                         const data = await offResponse.json();
                         if (data.foods && data.foods.length > 0) {
-                            console.log('Open Food Facts data received:', data);
-                            return data.foods.map(food => ({
+                            console.log('✓ Open Food Facts found:', data.foods.length);
+                            results = results.concat(data.foods.map(food => ({
                                 description: food.name || food.generic_name || 'Unknown',
                                 name: food.name || 'Unknown',
+                                source: 'Open Food Facts',
                                 servingSize: 100,
                                 servingSizeUnit: 'g',
                                 foodNutrients: [
@@ -3072,35 +3072,104 @@
                                     { nutrientName: 'Carbohydrate (g)', value: food.nutriments?.carbohydrates || 0 },
                                     { nutrientName: 'Fat (g)', value: food.nutriments?.fat || 0 }
                                 ]
+                            })));
+                        }
+                    }
+                } catch (e) {
+                    console.log('✗ Open Food Facts failed:', e.message);
+                }
+
+                // API 2: Nutritionix (Great for Indian foods, CORS-friendly)
+                console.log('2️⃣ Trying Nutritionix API (Indian food focus)...');
+                try {
+                    const nutritionixUrl = `https://www.nutritionix.com/api/search?q=${encodeURIComponent(query)}&limit=5`;
+                    const nutritionixResponse = await fetch(nutritionixUrl, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (nutritionixResponse.ok) {
+                        const data = await nutritionixResponse.json();
+                        if (data.hits && data.hits.length > 0) {
+                            console.log('✓ Nutritionix found:', data.hits.length);
+                            results = results.concat(data.hits.map(item => {
+                                const food = item.fields;
+                                return {
+                                    description: food.item_name || 'Unknown',
+                                    name: food.item_name || 'Unknown',
+                                    source: 'Nutritionix',
+                                    servingSize: food.serving_weight_grams || 100,
+                                    servingSizeUnit: 'g',
+                                    foodNutrients: [
+                                        { nutrientName: 'Energy (kcal)', value: food.nf_calories || 0 },
+                                        { nutrientName: 'Protein (g)', value: food.nf_protein || 0 },
+                                        { nutrientName: 'Carbohydrate (g)', value: food.nf_total_carbohydrate || 0 },
+                                        { nutrientName: 'Fat (g)', value: food.nf_total_fat || 0 }
+                                    ]
+                                };
                             }));
                         }
                     }
                 } catch (e) {
-                    console.log('Open Food Facts API failed:', e);
+                    console.log('✗ Nutritionix failed:', e.message);
                 }
 
-                // Try USDA API as fallback
-                const usdaUrl = `https://fdc.nal.usda.gov/api/foods/search?query=${encodeURIComponent(query)}&pageSize=10`;
-                console.log('Trying USDA API...');
-
+                // API 3: FatSecret (Good Indian food coverage)
+                console.log('3️⃣ Trying FatSecret API (Indian foods)...');
                 try {
+                    const fatsecretUrl = `https://platform.fatsecret.com/rest/server.api?method=foods.search&search_expression=${encodeURIComponent(query)}&format=json`;
+                    const fatsecretResponse = await fetch(fatsecretUrl, {
+                        method: 'GET'
+                    });
+
+                    if (fatsecretResponse.ok) {
+                        const data = await fatsecretResponse.json();
+                        if (data.foods && data.foods.food && Array.isArray(data.foods.food)) {
+                            console.log('✓ FatSecret found:', data.foods.food.length);
+                            results = results.concat(data.foods.food.slice(0, 5).map(food => ({
+                                description: food.food_name || 'Unknown',
+                                name: food.food_name || 'Unknown',
+                                source: 'FatSecret',
+                                servingSize: 100,
+                                servingSizeUnit: 'g',
+                                foodNutrients: [
+                                    { nutrientName: 'Energy (kcal)', value: 0 }, // FatSecret requires additional lookup
+                                    { nutrientName: 'Protein (g)', value: 0 },
+                                    { nutrientName: 'Carbohydrate (g)', value: 0 },
+                                    { nutrientName: 'Fat (g)', value: 0 }
+                                ]
+                            })));
+                        }
+                    }
+                } catch (e) {
+                    console.log('✗ FatSecret failed:', e.message);
+                }
+
+                // API 4: USDA (Official US database, fallback)
+                console.log('4️⃣ Trying USDA API (fallback)...');
+                try {
+                    const usdaUrl = `https://fdc.nal.usda.gov/api/foods/search?query=${encodeURIComponent(query)}&pageSize=5`;
                     const usdaResponse = await fetch(usdaUrl, {
                         method: 'GET',
-                        headers: { 'Accept': 'application/json' },
-                        timeout: 5000
+                        headers: { 'Accept': 'application/json' }
                     });
 
                     if (usdaResponse.ok) {
                         const data = await usdaResponse.json();
-                        console.log('USDA data received:', data);
-                        return data.foods || [];
+                        if (data.foods && data.foods.length > 0) {
+                            console.log('✓ USDA found:', data.foods.length);
+                            results = results.concat(data.foods.map(food => ({
+                                ...food,
+                                source: 'USDA'
+                            })));
+                        }
                     }
                 } catch (e) {
-                    console.log('USDA API failed:', e);
+                    console.log('✗ USDA API failed:', e.message);
                 }
 
-                console.log('No external API data available');
-                return [];
+                console.log('Total results from all APIs:', results.length);
+                return results.slice(0, 10); // Return top 10 results
             } catch (e) {
                 console.error('Nutrition API error:', e);
                 return [];
@@ -3180,21 +3249,27 @@
                 }).join('');
             }
 
-            // Search USDA API for additional matches
-            const usdaFoods = await searchUSDAFood(query);
-            if (usdaFoods.length > 0) {
-                html += (localMatches.length > 0 ? '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From USDA database:</div>' : '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From USDA database:</div>');
+            // Search external APIs for additional matches
+            const externalFoods = await searchUSDAFood(query);
+            if (externalFoods.length > 0) {
+                html += (localMatches.length > 0 ? '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e0e0e0; font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From external databases:</div>' : '<div style="font-size: 12px; color: #666; margin-bottom: 8px;">🌐 From external databases:</div>');
 
-                html += usdaFoods.slice(0, 5).map(food => {
+                html += externalFoods.map(food => {
                     const nutrition = extractNutritionFromUSDA(food);
                     const displayName = food.description || food.name || 'Unknown';
-                    const truncatedName = displayName.length > 60 ? displayName.substring(0, 60) + '...' : displayName;
+                    const truncatedName = displayName.length > 55 ? displayName.substring(0, 55) + '...' : displayName;
                     const servingSize = food.servingSize ? `${food.servingSize}${food.servingSizeUnit || 'g'}` : '100g';
+                    const source = food.source || 'Database';
+                    const sourceEmoji = source.includes('Nutritionix') ? '🍽️' :
+                                       source.includes('Open Food') ? '🌐' :
+                                       source.includes('FatSecret') ? '📊' :
+                                       source.includes('USDA') ? '🏛️' : '📚';
 
                     return `
                         <div onclick="selectUSDAFood('${displayName.replace(/'/g, "\\'")}', ${nutrition.calories}, ${nutrition.protein}, ${nutrition.carbs}, ${nutrition.fats}, '${servingSize.replace(/'/g, "\\'")}')"
                              style="padding: 10px; margin: 5px 0; background: #e8f5e9; border-radius: 6px; cursor: pointer; border-left: 3px solid #4CAF50;">
                             <div style="font-weight: 600; color: #333;">${truncatedName}</div>
+                            <div style="font-size: 11px; color: #999;">${sourceEmoji} ${source}</div>
                             <div style="font-size: 12px; color: #666;">${Math.round(nutrition.calories)} cal | ${servingSize}</div>
                         </div>
                     `;
