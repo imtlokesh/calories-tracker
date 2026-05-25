@@ -835,6 +835,14 @@
             opacity: 1;
         }
 
+        .notification.error {
+            background: #f44336;
+        }
+
+        .notification.success {
+            background: #4CAF50;
+        }
+
         .history-container {
             margin-bottom: 24px;
         }
@@ -897,49 +905,7 @@
             color: var(--primary);
         }
 
-        .profile-selector-modal .modal-content {
-            max-width: 95vw;
-            width: 480px;
-        }
 
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .profile-card {
-            background: var(--neutral-100);
-            border: 2px solid transparent;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .profile-card:hover {
-            border-color: var(--primary);
-            background: rgba(0, 188, 212, 0.05);
-        }
-
-        .profile-avatar {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .profile-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--neutral-900);
-        }
-
-        .profile-status {
-            font-size: 11px;
-            color: var(--neutral-600);
-            margin-top: 4px;
-        }
 
         /* Modal scroll prevention - Safari friendly */
         body.modal-open {
@@ -1256,7 +1222,7 @@
                         <div class="header-user" id="headerUser">Lokesh</div>
                     </div>
                 </div>
-                <button class="profile-switcher" onclick="openProfileSelector()">Switch Profile</button>
+                <button class="profile-switcher" onclick="openCreateProfile()">Create Profile</button>
             </div>
             <div class="header-date" id="todayDate">Today</div>
 
@@ -1341,15 +1307,30 @@
         </div>
     </div>
 
-    <!-- Profile Selector Modal -->
-    <div class="modal profile-selector-modal" id="profileSelectorModal">
+    <!-- Create Profile Modal -->
+    <div class="modal" id="createProfileModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Select Profile</div>
-                <button class="modal-close" onclick="closeProfileSelector()">×</button>
+                <div class="modal-title">Set Daily Targets</div>
+                <button class="modal-close" onclick="closeCreateProfile()">×</button>
             </div>
-            <div class="profile-grid" id="profileGrid"></div>
-            <p style="text-align: center; font-size: 12px; color: #999; margin-top: 20px;">Switch to a profile</p>
+
+            <div class="form-group">
+                <label class="form-label">Profile Name</label>
+                <input type="text" class="form-input" id="profileNameDisplay" placeholder="Profile name" disabled>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Calories Target</label>
+                <input type="number" class="form-input" id="caloriesTarget" placeholder="e.g., 2000" min="500" max="5000">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Protein Target (grams)</label>
+                <input type="number" class="form-input" id="proteinTarget" placeholder="e.g., 100" min="20" max="300">
+            </div>
+
+            <button onclick="saveProfileTargets()" style="width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px;">Save Targets</button>
         </div>
     </div>
 
@@ -1660,6 +1641,7 @@
                     gender: 'male',
                     activity: 'moderate',
                     goal: 'maintenance',
+                    customTargets: null,
                     dailyData: {}
                 },
                 neerosha: {
@@ -1670,6 +1652,7 @@
                     gender: 'female',
                     activity: 'moderate',
                     goal: 'maintenance',
+                    customTargets: null,
                     dailyData: {}
                 }
             }
@@ -1690,24 +1673,25 @@
         };
 
         function checkFirstLoad() {
-            if (!localStorage.getItem('myHealthMultiProfile')) {
-                openProfileSelector();
-            } else {
-                loadActiveProfile();
-                updateUI();
-            }
+            loadActiveProfile();
+            updateUI();
         }
 
-        function openProfileSelector() {
-            const modal = document.getElementById('profileSelectorModal');
-            const grid = document.getElementById('profileGrid');
+        function openCreateProfile() {
+            const modal = document.getElementById('createProfileModal');
+            const profile = currentProfile;
 
-            grid.innerHTML = Object.entries(appState.profiles).map(([key, profile]) => `
-                <div class="profile-card" onclick="selectProfile('${key}')">
-                    <div class="profile-avatar">${key === 'lokesh' ? '👨' : '👩'}</div>
-                    <div class="profile-name">${profile.name}</div>
-                </div>
-            `).join('');
+            // Populate form with current profile data
+            document.getElementById('profileNameDisplay').value = profile.name;
+
+            // Load saved targets if they exist, otherwise show default calculated targets
+            if (profile.customTargets) {
+                document.getElementById('caloriesTarget').value = profile.customTargets.calories;
+                document.getElementById('proteinTarget').value = profile.customTargets.protein;
+            } else {
+                document.getElementById('caloriesTarget').value = Math.round(nutritionTargets.calories);
+                document.getElementById('proteinTarget').value = Math.round(nutritionTargets.protein);
+            }
 
             modal.classList.add('active');
             preventBodyScroll();
@@ -1715,21 +1699,41 @@
             // Close modal when clicking outside (on the backdrop)
             modal.onclick = function(e) {
                 if (e.target === modal) {
-                    closeProfileSelector();
+                    closeCreateProfile();
                 }
             };
         }
 
-        function closeProfileSelector() {
-            document.getElementById('profileSelectorModal').classList.remove('active');
+        function closeCreateProfile() {
+            document.getElementById('createProfileModal').classList.remove('active');
             restoreBodyScroll();
         }
 
-        function selectProfile(profileKey) {
-            appState.activeProfile = profileKey;
-            closeProfileSelector();
-            loadActiveProfile();
+        function saveProfileTargets() {
+            const caloriesTarget = parseFloat(document.getElementById('caloriesTarget').value);
+            const proteinTarget = parseFloat(document.getElementById('proteinTarget').value);
+
+            if (!caloriesTarget || !proteinTarget || caloriesTarget < 500 || proteinTarget < 20) {
+                showNotification('Please enter valid targets (Calories: 500-5000, Protein: 20-300)', 'error');
+                return;
+            }
+
+            // Save custom targets to current profile
+            currentProfile.customTargets = {
+                calories: caloriesTarget,
+                protein: proteinTarget
+            };
+
+            // Update global nutrition targets
+            nutritionTargets.calories = caloriesTarget;
+            nutritionTargets.protein = proteinTarget;
+
+            // Save to localStorage and update UI
+            saveAppData();
+            closeCreateProfile();
             updateUI();
+
+            showNotification('Targets saved successfully!', 'success');
 
             // Refresh history view if it's currently visible
             const historyTab = document.getElementById('history-tab');
@@ -1768,6 +1772,15 @@
 
         function calculateNutritionTargets() {
             const profile = currentProfile;
+
+            // Use custom targets if they exist
+            if (profile.customTargets) {
+                nutritionTargets = {
+                    calories: profile.customTargets.calories,
+                    protein: profile.customTargets.protein
+                };
+                return;
+            }
 
             let bmr;
             if (profile.gender === 'male') {
@@ -2500,10 +2513,11 @@
             closeCamera();
         }
 
-        function showNotification(message) {
+        function showNotification(message, type = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = message;
-            notif.classList.add('show');
+            notif.classList.remove('error', 'success');
+            notif.classList.add(type, 'show');
             setTimeout(() => notif.classList.remove('show'), 2000);
         }
 
