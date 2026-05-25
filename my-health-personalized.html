@@ -109,22 +109,35 @@
         .header {
             background: linear-gradient(135deg, #00BCD4 0%, #009688 100%);
             color: white;
-            padding: 14px 16px;
+            padding: 16px 16px 12px 16px;
         }
 
         .header-top {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 8px;
-            gap: 12px;
+            text-align: center;
+            margin-bottom: 12px;
+            gap: 8px;
         }
 
         .header-logo {
             display: flex;
             align-items: center;
             gap: 12px;
-            flex: 1;
+            justify-content: center;
+        }
+
+        .header-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .header-buttons-grid .profile-switcher:nth-child(3) {
+            grid-column: 1 / -1;
         }
 
         .logo-box {
@@ -143,7 +156,10 @@
         }
 
         .header-info {
-            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
         }
 
         .header-title {
@@ -162,10 +178,9 @@
 
         .header-date {
             font-size: 13px;
-            opacity: 0.9;
-            margin-top: 0px;
-            margin-bottom: 6px;
+            opacity: 0.85;
             font-weight: 500;
+            order: 3;
         }
 
         .header-btn {
@@ -191,13 +206,14 @@
             background: rgba(255, 255, 255, 0.15);
             border: 1.5px solid rgba(255, 255, 255, 0.3);
             color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
+            text-align: center;
         }
 
         .profile-switcher:hover {
@@ -1157,13 +1173,13 @@
                         <div class="header-user" id="headerUser">Lokesh</div>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div class="header-date" id="todayDate">Today</div>
+                <div class="header-buttons-grid">
                     <button class="profile-switcher" onclick="openCreateProfile()">Update Profile</button>
                     <button class="profile-switcher" onclick="switchTab('history')">📈 Trends</button>
                     <button class="profile-switcher" onclick="openAddFood()">🍽️ Add Food</button>
                 </div>
             </div>
-            <div class="header-date" id="todayDate">Today</div>
 
             <div class="tabs">
                 <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
